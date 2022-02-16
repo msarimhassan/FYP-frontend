@@ -1,0 +1,178 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+.DashBody{
+    position: relative;
+    min-height: 100vh;
+    /* overflow:hidden; */
+    box-sizing: border-box;
+    display: flex;
+}
+
+.sidebar{
+    box-sizing: border-box;
+    height: 100vh;
+    width: 78px;
+    background-color: #CE0CA0;
+    position: sticky;
+    top: 0;
+    left: 0;
+    padding: 6px 14px;
+    transition: all 0.5s ease;
+}
+
+.sidebar.active{
+    width: 240px;
+   
+}
+.sidebar .logo-content .logo{
+    color: #fff;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    align-items: center;
+    opacity: 0;
+    box-sizing: border-box;
+}
+
+.sidebar.active .logo-content .logo{
+     
+    opacity: 1;
+
+}
+
+.logo-content .logo i{
+    font-size: 28px;
+    margin-right: 5px;
+    box-sizing: border-box;
+
+}
+
+.logo-content .logo .logo_name{
+
+    font-size: 20px;
+    font-weight: 400;
+    box-sizing: border-box;
+}
+
+.sidebar #btn{
+    position: absolute;
+    color: #fff;
+    left: 50%;
+    top: 6px;
+    font-size: 20px;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    line-height: 50px;
+    transform: translateX(-50%);
+}
+
+.sidebar.active #btn{
+ 
+    left:90%
+}
+
+.sidebar ul{
+    margin-top: 20px;
+
+}
+
+.sidebar ul li{
+    list-style: none;
+    position: relative;
+    height: 50px;
+    width: 100%;
+    margin: 0 5px;
+    line-height: 50px;
+    box-sizing: border-box;
+
+}
+.sidebar .listname{
+    opacity: 0;
+}
+
+.sidebar.active .listname{
+    opacity: 1;
+}
+.sidebar ul li a{
+    color: #fff;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    border-radius: 12px;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+.sidebar ul li a:hover{
+    color: black;
+    background-color: white;
+}
+
+.sidebar ul li a i{
+
+    height: 50px;
+    min-width: 50px;
+    border-radius: 12px;
+    line-height: 50px;
+    text-align: center;
+    
+}
+
+.sidebar ul li .tooltip{
+    position: absolute;
+    height: 35px;
+    left: 122px;
+    top:0;
+    transform: translate(-50% , -10%);
+    border-radius: 6px;
+    line-height: 35px;
+    text-align: center;
+    width: 122px;
+    background: #fff;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+    transition: 0s;
+    opacity: 0;
+    cursor: pointer;
+    display: block;
+
+}
+
+.sidebar.active ul li .tooltip{
+
+    display: none;
+}
+
+.sidebar ul li:hover .tooltip{
+    opacity: 1;
+    top: 10px;
+    transition: all 0.5s ease;
+}
+
+.content{
+
+    flex: 2;
+}
+
+
+.wave {
+  animation-name: wave-animation;  /* Refers to the name of your @keyframes element below */
+  animation-duration: 2.5s;        /* Change to speed up or slow down */
+  animation-iteration-count: infinite;  /* Never stop waving :) */
+  transform-origin: 70% 70%;       /* Pivot around the bottom-left palm */
+  display: inline-block;
+}
+
+@keyframes wave-animation {
+    0% { transform: rotate( 0.0deg) }
+   10% { transform: rotate(14.0deg) }  /* The following five values can be played with to make the waving more or less extreme */
+   20% { transform: rotate(-8.0deg) }
+   30% { transform: rotate(14.0deg) }
+   40% { transform: rotate(-4.0deg) }
+   50% { transform: rotate(10.0deg) }
+   60% { transform: rotate( 0.0deg) }  /* Reset for the last half to pause */
+  100% { transform: rotate( 0.0deg) }
+}
