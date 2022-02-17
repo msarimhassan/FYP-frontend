@@ -1,36 +1,36 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import banner from '.././images/banner.PNG';
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
-export default function TourContainer() {
+import { Link } from 'react-router-dom';
+export default function TourContainer(props) {
+	const {
+		date,
+		details,
+		duration,
+		email,
+		id,
+		imgUrl,
+		location,
+		price,
+		title
+	} = props.tour;
 	return (
-		<Grid
-			container
-			sx={{ boxShadow: 3, bgcolor: '#fff', width: '50%', height: '25%' }}
-		>
-			<Grid lg={2} item>
-				<Box textAlign="center" sx={{ ml: 1, mt: 1 / 2 }}>
-					<img src={banner} style={{ borderRadius: '20px' }} alt="" />
-				</Box>
-			</Grid>
-			<Grid lg={2} item>
-				<Typography variant="h5">Trip to kashmir</Typography>
-				<Stack direction="column">
-					<Typography variant="subtitle1">Duration: 3</Typography>
-					<Typography variant="subtitle1">
-						Location: kashmir
-					</Typography>
-					<Typography variant="subtitle1">
-						Starting From: 2022-02-01
-					</Typography>
-				</Stack>
-			</Grid>
-			<Grid lg={1} item>
-				<Typography variant="h5">10,000</Typography>
-			</Grid>
-		</Grid>
+		<div>
+			<ul>
+				<li>{id}</li>
+				<li>{email}</li>
+				<li>{title}</li>
+				<li>{location}</li>
+				<li>{price}</li>
+				<li>{duration}</li>
+				<img src={imgUrl} alt="" style={{ height: '200px' }} />
+				<li>{date}</li>
+				<li>{details}</li>
+			</ul>
+			<button id={id} onClick={props.deletefunction}>
+				delete
+			</button>
+			<Link to={{ pathname: 'updatetour', state: { id: id } }}>
+				Update
+			</Link>
+		</div>
 	);
 }

@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import family from '../../images/family.jpg';
 import TourList from './TourList';
-import TourContainer from '../TourContainer';
 
 export default function Tiles() {
 	return (
@@ -51,8 +50,6 @@ export default function Tiles() {
 					<TourList />
 				</Grid>
 			</Grid>
-
-			<TourContainer />
 		</React.Fragment>
 	);
 }

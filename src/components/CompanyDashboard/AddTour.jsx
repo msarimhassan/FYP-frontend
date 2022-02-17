@@ -173,17 +173,17 @@ export default function BasicTabs() {
 		e.preventDefault();
 
 		// uploadImage(File)
-		uploadImage(File).then((url) => {
+		uploadImage(File).then(url => {
 			setTour({ ...tour, imgUrl: url });
 
-		// 	 axios
-		// 		.post(
-		// 			`http://localhost:5000/company/addtour/${currentUser.email}`,
-		// 			tour
-		// 		)
-		// 		.then(res => {
-		// 			console.log(res.data);
-		// 		});
+			axios
+				.post(
+					`http://localhost:5000/company/addtour/${currentUser.email}`,
+					tour
+				)
+				.then(res => {
+					console.log(res.data);
+				});
 		});
 	};
 
