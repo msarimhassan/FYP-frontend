@@ -17,7 +17,6 @@ import axios from 'axios';
 export default function Company(props) {
 	const { match, location, history } = props;
 	const { currentUser } = useAuth();
-	console.log(match.path);
 	return (
 		<div style={{ backgroundColor: '#F3F3F3' }}>
 			<ResponsiveAppBar pathname={match.path} />

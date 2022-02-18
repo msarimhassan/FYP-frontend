@@ -1,65 +1,3 @@
-// import React,{useRef,useState} from 'react'
-
-// export default function AddTour() {
-//
-//      const locationRef=useRef();
-//      const daysRef=useRef();
-//      const priceRef=useRef();
-//      const descriptionRef=useRef();
-
-//     const handleSubmit =(e)=>{
-
-//          e.preventDefault()
-//          const file=e.target[2].files[0]
-//          uploadImage(file);
-
-//     }
-
-//     }
-//     return (
-//         <div>
-//          <form onSubmit={handleSubmit}>
-//              <div>
-//                  <label htmlFor="Title">Trip Title</label>
-//              <br />
-//              <input type="text" name='title' ref={titleRef} placeholder='Enter your tour title' required/>
-//              </div>
-//              <br />
-//             <div>
-//                  <label htmlFor="Location">Trip Location</label>
-//              <br />
-//              <input type="text" name='location' ref={locationRef} placeholder='Enter location' required/>
-//             </div>
-//              <br />
-//              <div>
-//              <label htmlFor="tripBanner">Attach Trip Banner </label>
-//             <br />
-//             <input type="file"  name="banner" required/>
-//              </div>
-//             <br />
-//            <div>
-//             <label htmlFor="Day">Duration of trip</label>
-//             <br />
-//             <input type="text" name="Duration" ref={daysRef} placeholder='Enter duration' required/>
-//            </div>
-//             <br />
-//             <div>
-//              <label htmlFor="Price">Price</label>
-//              <br />
-//              <input type="text" name="Price" ref={priceRef} placeholder='Enter the price' required />
-//             </div>
-//              <br />
-//              <div>
-//             <label htmlFor="Description">Description</label>
-//              <br />
-//              <textarea name="descroption" id="description" cols="30" rows="10" ref={descriptionRef} placeholder='Describe the trip' required></textarea>
-//              </div>
-//              <br />
-//             <input type="Submit" name="submit" />
-//          </form>
-//         </div>
-//     )
-// }
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
@@ -76,7 +14,9 @@ import { styled } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import Divider from '@mui/material/Divider';
+import Alert from '@mui/material/Alert';
 import { useAuth } from '../../contexts/AuthContext';
+import LoadingButton from '@mui/lab/LoadingButton';
 import axios from 'axios';
 
 function TabPanel(props) {
@@ -122,7 +62,12 @@ export default function BasicTabs() {
 		date: '',
 		details: ''
 	};
-
+	const [error, setError] = useState({
+		status: false,
+		msg: '',
+		type: ''
+	});
+	const [loading, setLoading] = useState(false);
 	const { currentUser } = useAuth();
 	const [imageUrl, setimageUrl] = useState('');
 	const [url, setUrl] = useState('');
@@ -170,9 +115,9 @@ export default function BasicTabs() {
 	};
 
 	const handleSubmit = async e => {
+		setLoading(true);
 		e.preventDefault();
 
-		// uploadImage(File)
 		uploadImage(File).then(url => {
 			setTour({ ...tour, imgUrl: url });
 
@@ -183,6 +128,13 @@ export default function BasicTabs() {
 				)
 				.then(res => {
 					console.log(res.data);
+					document.getElementById('tour-detail-form').reset();
+					setError({
+						status: true,
+						msg: 'Added a new Tour',
+						type: 'success'
+					});
+					setLoading(false);
 				});
 		});
 	};
@@ -260,6 +212,17 @@ export default function BasicTabs() {
 						>
 							Tour Details
 						</Typography>
+						{error.status ? (
+							<Alert
+								sx={{ mt: 1 }}
+								variant="outlined"
+								severity={error.type}
+							>
+								{error.msg}
+							</Alert>
+						) : (
+							''
+						)}
 						<div>
 							<TextField
 								fullWidth
@@ -387,15 +350,16 @@ export default function BasicTabs() {
 								required
 							/>
 
-							<Button
+							<LoadingButton
 								fullWidth
-								variant="contained"
 								type="submit"
+								loading={loading}
+								variant="contained"
 								color="secondary"
-								sx={{ boxShadow: 6, mt: 4 }}
+								sx={{ mt: 3 }}
 							>
 								Post
-							</Button>
+							</LoadingButton>
 						</div>
 					</Box>
 				</TabPanel>
