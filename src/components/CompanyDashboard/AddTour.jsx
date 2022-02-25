@@ -18,6 +18,8 @@ import Alert from '@mui/material/Alert';
 import { useAuth } from '../../contexts/AuthContext';
 import LoadingButton from '@mui/lab/LoadingButton';
 import axios from 'axios';
+import { toast ,ToastContainer } from 'react-toastify';
+ import 'react-toastify/dist/ReactToastify.css';
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -118,22 +120,28 @@ export default function BasicTabs() {
 		setLoading(true);
 		e.preventDefault();
 
-		uploadImage(File).then(url => {
-			setTour({ ...tour, imgUrl: url });
-
+		uploadImage(File).then(imgUrl => {
+			setTour({ ...tour, imgUrl });
+			const tourData = {
+				...tour, imgUrl
+			}
+			
 			axios
 				.post(
 					`http://localhost:5000/company/addtour/${currentUser.email}`,
-					tour
+					tourData
 				)
 				.then(res => {
 					console.log(res.data);
-					document.getElementById('tour-detail-form').reset();
+					document.getElementById('tourform').reset();
 					setError({
 						status: true,
 						msg: 'Added a new Tour',
 						type: 'success'
 					});
+					 toast.success("Posted", {
+               position: toast.POSITION.TOP_CENTER
+              });
 					setLoading(false);
 				});
 		});
@@ -160,6 +168,7 @@ export default function BasicTabs() {
 	};
 	return (
 		<React.Fragment>
+			<ToastContainer/>
 			<Typography
 				variant="h4"
 				textAlign="center"
@@ -201,7 +210,7 @@ export default function BasicTabs() {
 
 					<Box
 						component="form"
-						id="tour-detail-form"
+						id="tourform"
 						textAlign="center"
 						onSubmit={handleSubmit}
 					>

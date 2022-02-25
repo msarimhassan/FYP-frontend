@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
@@ -8,23 +9,43 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Alert from '@mui/material/TextField';
 import LoadingButton from '@mui/lab/LoadingButton';
+import MyLoader from '../MyLoader';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import InputAdornment from '@mui/material/InputAdornment';
+import { getDownloadURL, ref, uploadBytesResumable,deleteObject } from 'firebase/storage';
+import {storage} from "../../firebase";
+import { toast ,ToastContainer } from 'react-toastify';
+ import 'react-toastify/dist/ReactToastify.css';
+ 
 
 export default function UpdateTour(props) {
+	const initialValues = {
+		title: '',
+		location: '',
+		imgUrl: '',
+		duration: '',
+		price: '',
+		date: '',
+		details: ''
+	};
 	const [tour, setTour] = useState(null);
-	useEffect(() => {
-		fetchData();
-		console.log('imcallinguseffectupadte')
-		console.log(tour.data);
-		console.log(tour.data.title);
-	}, []);
+	const [imgUrl,setUrl]=useState(null);
+
+	const [render,setRender]=useState(true);
+	const [File,setFile]=useState(null);
 	const { currentUser } = useAuth();
 	const [loading, setLoading] = useState(false);
+	
 	const [error, setError] = useState({
 		status: false,
 		msg: '',
 		type: ''
 	});
 
+	useEffect(() => { fetchData() 
+	
+	}, []);
+	
 	
 	const {
 		register,
@@ -36,21 +57,103 @@ export default function UpdateTour(props) {
 
 	//for fetching the document from the backend
 	const fetchData = () => {
-		axios
-			.get(
+	
+		axios.get(
 				`http://localhost:5000/company/gettour/${props.location.state.id}`
 			)
 			.then(res => {
-				setTour(res);
-			});
+			    setTour(res.data);
+				setRender(false);
+				
+			}).catch((err)=>{
+				console.log(err);
+				
+			})
+		
+		
+	}
+	
+
+
+	const uploadImage = async file => {
+	const promise = new Promise((resolve, reject) => {
+			if (!file){
+				setUrl(tour.imgUrl)
+               resolve(tour.imgUrl);
+			}
+			
+            const imgRef = ref(storage,tour.imgUrl);
+			deleteObject(imgRef).then(()=>{
+			const storageRef = ref(storage, `/images/${file.name}`);
+			const uploadTask = uploadBytesResumable(storageRef, file);
+			uploadTask.on(
+				'state_changed',
+				snapshot => {
+					const progress = Math.round(
+						(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+					);
+				},
+				err => {
+					console.log(err);
+					reject(err);
+				},
+				() => {
+					getDownloadURL(uploadTask.snapshot.ref).then(url => {
+						setUrl(url);
+						resolve(url);
+					});
+				}
+			);
+		});
+		})
+		return promise;
+		
 	};
 
-	const onSubmit = async data => {
-		console.log(data);
+		const onSubmit = async data => {
+		setLoading(true);
+
+
+		uploadImage(File).then(imgUrl=>{
+			const tourData = {
+				...data, imgUrl
+			}
+			console.log(tourData);
+			axios.put('http://localhost:5000/company/updateTour',tourData).then(res=>{
+				console.log(res.data);
+				 toast.success("Updated", {
+               position: toast.POSITION.TOP_CENTER
+              });
+				document.getElementById('UpdateTour').reset();
+
+			}).catch(err=>{
+				console.log(err)
+			})
+			setLoading(false);
+		})
+         
+	};
+
+	const handleImage=e=>{
+		const file = e.target.files[0];
+		const {name}=file;
+		setFile(file);
+		console.log(file);
+	}
+	const handleInputChange = e => {
+		const { name, value } = e.target;
+		setTour({
+			...tour,
+			[name]: value
+		});
 	};
 
 	return (
-		<Box
+			<React.Fragment>
+				<ToastContainer/>
+				{  render ? <Box style={{backgroundColor:"#ffff"}} sx={{ml:'auto',mr:'auto',width:'50%',display:'flex',alignItems:'center',justifyContent:'center'}} >
+				   <MyLoader style={{justifyContent:'center',alignItems:'center'}} id={1}/>
+				 </Box> : <Box
 			component="form"
 			textAlign="center"
 			id="UpdateTour"
@@ -76,7 +179,7 @@ export default function UpdateTour(props) {
 				textAlign="left"
 				sx={{ pt: 4 }}
 			>
-				Company Signup
+			Update Tour
 			</Typography>
 			{error.status ? (
 				<Alert sx={{ mt: 1 }} variant="outlined" severity={error.type}>
@@ -87,71 +190,125 @@ export default function UpdateTour(props) {
 			)}
 			<TextField
 				fullWidth
-				error={errors.CompanyName}
+				error={errors.id}
 				id="outlined-basic"
-				label="Company Name"
+				label="Id"
+				type='hidden'
 				variant="outlined"
 				color="secondary"
-				{...register('CompanyName', { required: true })}
-				sx={{ mt: 3 }}
+				{...register('id', { required: true })}
+				sx={{ mt: 3,display:'none' }}
+				value={props.location.state.id}
 				
+				focused
+				
+			
+			/>
+			<TextField
+				fullWidth
+				error={errors.title}
+				id="outlined-basic"
+				label="Tour Title"
+				variant="outlined"
+				color="secondary"
+				{...register('title', { required: true })}
+				sx={{ mt: 3 }}
+				value={tour.title}
+				onChange={handleInputChange}
+				focused
 				
 			
 			/>
 			<br />
-			{errors.CompanyName && (
+			{errors.title && (
 				<span style={{ color: 'red' }}>This field is required</span>
 			)}
 			<br />
 			<TextField
 				fullWidth
-				error={errors.CompanyEmail}
+				error={errors.location}
 				id="outlined-basic"
-				label="Company Email"
+				label="Location"
 				variant="outlined"
 				color="secondary"
-				{...register('CompanyEmail', {
+				{...register('location', {
 					required: true,
-					pattern:
-						/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 				})}
 				sx={{ mt: 3 }}
+				value={tour.location}
+				onChange={handleInputChange}
+				focused
 			/>
 			<br />
-			{errors.CompanyEmail && (
-				<span style={{ color: 'red' }}>Enter a valid Email</span>
+			{errors.location && (
+				<span style={{ color: 'red' }}>This field is required</span>
 			)}
+			<br />
+				<TextField
+				fullWidth
+				error={errors.imgUrl}
+				id="outlined-basic"
+				label="Tour Banner"
+				type="file"
+				variant="outlined"
+				color="secondary"
+				onChange={handleImage}
+				// {...register('imgUrl', { required: true })}
+				sx={{ mt: 3 }}
+				InputProps={{
+									startAdornment: (
+										<InputAdornment position="start">
+											<AddAPhotoIcon />
+										</InputAdornment>
+									)
+								}}
+				
+				focused
+			/>
+			
+			<br />
+			{errors.imgUrl && (
+				<span style={{ color: 'red' }}>This field is required</span>
+			)}
+			<img src={tour.imgUrl} alt="" style={{width:'280px',marginTop:'10px'}}  />
 			<br />
 			<TextField
 				fullWidth
-				error={errors.DtsNo}
+				error={errors.duration}
 				id="outlined-basic"
-				label="DTS No"
+				label="Duration"
 				variant="outlined"
 				color="secondary"
-				{...register('DtsNo', { required: true })}
+				{...register('duration', { required: true })}
 				sx={{ mt: 3 }}
+				onChange={handleInputChange}
+				value={tour.duration}
+				focused
+
 			/>
 			<br />
-			{errors.DtsNo && (
+			{errors.duration && (
 				<span style={{ color: 'red' }}>This field is required</span>
 			)}
 			<br />
 
 			<TextField
 				fullWidth
-				error={errors.Password}
+				error={errors.price}
 				id="outlined-basic"
-				label="Password"
+				label="Price"
 				variant="outlined"
 				color="secondary"
-				{...register('Password', { required: true, min: 8 })}
+				{...register('price', { required: true})}
 				sx={{ mt: 3 }}
+				value={tour.price}
+				onChange={handleInputChange}
+				focused
 			/>
 			<br />
-			{errors.CompanyName && (
+			{errors.price && (
 				<span style={{ color: 'red' }}>
-					Password must be 8 characters
+					This field is required
 				</span>
 			)}
 			<br />
@@ -159,44 +316,40 @@ export default function UpdateTour(props) {
 				fullWidth
 				error={errors.Url}
 				id="outlined-basic"
-				label="Website URL"
+				label="Starting Date"
 				variant="outlined"
+				type="date"
 				color="secondary"
-				{...register('Url', { required: true })}
+				{...register('date', { required: true })}
 				sx={{ mt: 3 }}
+				onChange={handleInputChange}
+				value={tour.date}
+				focused
 			/>
 			<br />
-			{errors.Url && (
+			{errors.date && (
 				<span style={{ color: 'red' }}>This field is required</span>
 			)}
 			<br />
+		
 			<TextField
 				fullWidth
-				error={errors.WhatsappNo}
+				error={errors.details}
 				id="outlined-basic"
-				label="Whatsapp Number"
+				multiline
+				rows={6}
+				label="Tour Details"
 				variant="outlined"
 				color="secondary"
-				{...register('WhatsappNo', { required: true })}
+				{...register('details', { required: true })}
 				sx={{ mt: 3 }}
+				value={tour.details}
+				onChange={handleInputChange}
+				
+				focused
 			/>
 			<br />
-			{errors.WhatsappNo && (
-				<span style={{ color: 'red' }}>This field is required</span>
-			)}
-			<br />
-			<TextField
-				fullWidth
-				error={errors.InstaName}
-				id="outlined-basic"
-				label="Instagram UserName"
-				variant="outlined"
-				color="secondary"
-				{...register('InstaName', { required: true })}
-				sx={{ mt: 3 }}
-			/>
-			<br />
-			{errors.InstaName && (
+			{errors.details && (
 				<span style={{ color: 'red' }}>This field is required</span>
 			)}
 			<br />
@@ -208,8 +361,10 @@ export default function UpdateTour(props) {
 				color="secondary"
 				sx={{ mt: 3 }}
 			>
-				Signup
+				Update
 			</LoadingButton>
 		</Box>
+}
+		</React.Fragment>
 	);
 }

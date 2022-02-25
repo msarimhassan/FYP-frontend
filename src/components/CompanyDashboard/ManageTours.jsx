@@ -3,21 +3,25 @@ import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
 import TourContainer from '../TourContainer';
 import Box from "@mui/material/Box";
+import Typography from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
 import { storage } from "../../firebase";
 import { ref,deleteObject } from 'firebase/storage';
+import { toast ,ToastContainer } from 'react-toastify';
+ import 'react-toastify/dist/ReactToastify.css';
+ import MyLoader from '../MyLoader';
 
 
 export default function ManageTours() {
 	const { currentUser } = useAuth();
 	const [tours, setTours] = useState([]);
 	const [open, setOpen] = React.useState(false);
-	useEffect(() => {
-		fetchData();
-	}, tours);
+	const [render,setRender]=useState(false);
+	
+	useEffect(() => { fetchData(); },tours);
 
 	const fetchData = async () => {
 		axios
@@ -25,6 +29,8 @@ export default function ManageTours() {
 			.then(res => {
 				const data = res.data;
 				setTours([...tours, ...data]);
+				setRender(true);
+				
 			});
 	};
 
@@ -56,9 +62,12 @@ export default function ManageTours() {
 				return tour.id !== id;
 			})
 		);
-		alert('Deleted');
+	
 			})
 		})
+		 toast.success("Deleted", {
+               position: toast.POSITION.TOP_CENTER
+              });
 		}
 		else{
               axios
@@ -70,8 +79,10 @@ export default function ManageTours() {
 				return tour.id !== id;
 			})
 		   );
-		alert('Deleted');
 			})
+			 toast.success("Deleted", {
+               position: toast.POSITION.TOP_CENTER
+              });
 		}
 	
 		
@@ -79,34 +90,16 @@ export default function ManageTours() {
 
 	return (
 		<React.Fragment>
-         <Box sx={{ maxWidth:450,m:'auto',bgcolor: 'text.primary'}}>
-      <Collapse in={open}>
-        <Alert
-          action={
-            <IconButton
-              aria-label="close"
-              color="success"
-              size="small"
-              onClick={() => {
-                setOpen(false);
-              }}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }
-          sx={{ mb: 2 }}
-        >
-          Deleted
-        </Alert>
-      </Collapse>
-    </Box>
-
+        
+         <ToastContainer/>
 			{/* Tour Cards */}
+			{render ?
 		<Box sx={{maxWidth:450,m:'auto'}}>
-			{tours.map(tour => (
+			
+			{tours.length > 0 ? tours.map(tour => (
 				<TourContainer tour={tour} deletefunction={handleDelete} />
-			))}
-		</Box>
+			)) :  <Typography variant="h1" sx={{textAlign:'center'}}>No tours to display</Typography>  }
+		</Box> :  <MyLoader style={{justifyContent:'center',alignItems:'center'}} id={2}/> }
 		</React.Fragment>
 	);
 }
