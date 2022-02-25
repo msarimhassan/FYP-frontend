@@ -9,11 +9,22 @@ import User from './components/User';
 import CompanyDashboard from './components/CompanyDashboard';
 import Admin from './components/Admin';
 import { AuthProvider } from './contexts/AuthContext';
-
+import "./styles/App.css"
+import { createTheme, ThemeProvider} from '@mui/material/styles';
 function App() {
+
+	const theme = createTheme({
+  typography: {
+    fontFamily: [
+      'Raleway',
+      'sans-serif',
+    ].join(','),
+},
+})
 	return (
 		<React.Fragment>
-			<AuthProvider>
+			<ThemeProvider theme={theme}>
+				<AuthProvider>
 				<Switch>
 					<Route exact path="/" component={Login} />
 					<Route exact path="/signup" component={Signup} />
@@ -30,9 +41,12 @@ function App() {
 					<Route exact path="/admin" component={Admin} />
 					<Route exact path="/user" component={User} />
 
-					<Route path="/company" component={CompanyDashboard} />
+					
+						<Route path="/company" component={CompanyDashboard} />
+					
 				</Switch>
 			</AuthProvider>
+			</ThemeProvider>
 		</React.Fragment>
 	);
 }
