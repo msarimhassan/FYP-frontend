@@ -13,10 +13,9 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 import Logo from '../../images/logo.png';
-import Chip from '@mui/material/Chip';
 import { useAuth } from '../../contexts/AuthContext';
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import { CardHeader } from '@mui/material';
+
 
 const ResponsiveAppBar = props => {
 	const linkStyle = {
@@ -182,12 +181,12 @@ const ResponsiveAppBar = props => {
 					</Box>
 
 					<Box sx={{ flexGrow: 0 }}>
-						<Tooltip title="Open settings">
+						<Tooltip title="Profile">
 							<IconButton
 								onClick={handleOpenUserMenu}
-								sx={{ p: 0, color: '#fff' }}
+								sx={{ p: 0,m:0, color: '#fff' }}
 							>
-								<Chip
+								<CardHeader
 									avatar={
 										<Avatar>
 											{currentUser &&

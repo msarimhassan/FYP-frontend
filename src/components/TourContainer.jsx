@@ -67,9 +67,6 @@ export default function TourContainer(props) {
 	} = props.tour;
 	const [expanded, setExpanded] = React.useState(false);
 
-	const handleDelete = e => {
-		console.log(e.target.id);
-	};
 	const handleExpandClick = () => {
 		setExpanded(!expanded);
 	};

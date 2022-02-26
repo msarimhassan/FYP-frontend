@@ -103,7 +103,7 @@ import Typography from "@mui/material/Typography";
 import TextField from '@mui/material/TextField';
 import { useForm } from 'react-hook-form';
 import LoadingButton from '@mui/lab/LoadingButton';
-import LoginWallpaper from "../images/loginWallpaper.jpg"
+import LoginWallpaper from "../images/loginWallpaper.png"
 import PropTypes from 'prop-types';
 import { flexbox } from '@mui/system';
 import '../styles/Login.css';
@@ -111,6 +111,9 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { toast ,ToastContainer } from 'react-toastify';
  import 'react-toastify/dist/ReactToastify.css';
+ import Grid from "@mui/material/Grid";
+ import "../styles/Login.css";
+ import {Link } from "react-router-dom";
  
 import { useAuth } from '../contexts/AuthContext';
 
@@ -119,7 +122,7 @@ import { useAuth } from '../contexts/AuthContext';
 export default function Login (){
 	const [loading,setLoading]=useState(false);
 	let history = useHistory();
-		const { Login } = useAuth();
+		const { Login,Logout } = useAuth();
 	const {
 		register,
 		handleSubmit,
@@ -142,7 +145,7 @@ export default function Login (){
 								if (isOrg === 'No') {
 									history.push('/user');
 								} else if (isOrg === 'Yes') {
-									history.push('/company');
+								history.push('/company');
 								}
 								else{
 									toast.error('Login Failed', {
@@ -150,6 +153,15 @@ export default function Login (){
               });
 								}
 							})
+				}
+				else
+				{
+					Logout().then(()=>{
+						toast.error('Please verify your Account', {
+               position: toast.POSITION.TOP_RIGHT
+              });
+					})
+
 				}
 			 })
 		 } catch (error) {
@@ -163,16 +175,21 @@ export default function Login (){
 	return (
 	<React.Fragment>
 		<Navbar/>
-		<ToastContainer/>
-       <div style={{diplay:'flex',flexDirection:'row'}}>
-		   
-		    <Box component="form" id="login" onSubmit={handleSubmit(onSubmit)} sx={{width:'30%',borderRadius:4,bgcolor: '#fff',pb: 5,
+         <ToastContainer/>
+		<div className='login-container'>
+		
+           
+			 <Box>
+				  <img src={LoginWallpaper} className="responsive-img"  alt="" />
+			 </Box>
+             
+				  <Box component="form" id="login" onSubmit={handleSubmit(onSubmit)} sx={{bgcolor: '#fff',pb: 3,
 					pl: 5,
 					pr: 5,
-					mt: 5,
-					pt:5,
-					mb: 5}} elevation={24}>
-			<Typography variant='h4'>Login Form</Typography>
+					mt:4,
+					pt:1,
+					}} >
+			<Typography variant='h4'>Login</Typography>
 			<Typography variant="caption">Login with your data that you entered during your registration</Typography>
 			<br />
            <TextField sx={{mt:3}} id="outlined-secondary" label="Email" variant="outlined" color='secondary' fullWidth	{...register('Email', { required: true })} error={!!errors.Email} />
@@ -181,28 +198,28 @@ export default function Login (){
 					<span style={{ color: 'red' }}>This field is required</span>
 				)}
 		  <br />
-		   <TextField sx={{mt:3}} id="outlined-secondary" label="Password" variant="outlined" color='secondary' type='Password' fullWidth {...register('Password', { required: true })} error={!!errors.Password} />
+		   <TextField sx={{mt:2}} id="outlined-secondary" label="Password" variant="outlined" color='secondary' type='Password' fullWidth {...register('Password', { required: true })} error={!!errors.Password} />
 		   <br />
 		    {errors.Password && (
 					<span style={{ color: 'red' }}>This field is required</span>
 				)}
+		  
+		  <Typography  textAlign='right' sx={{mt:1}}><Link to="forgetpassword">Forgot Password?</Link></Typography>
 		  <br />
 		   <LoadingButton
-				  
+				   fullWidth
 					type="submit"
 					loading={loading}
 					variant="contained"
 					color="secondary"
-					sx={{ mt: 3,ml:'auto',mr:'auto' }}
+					sx={{ml:'auto',mr:'auto' }}
 				>
 					Login
 				</LoadingButton>
+				<br />
+				<Typography textAlign='center' sx={{mt:1}}>Dont have an account?<Link to="/signup" style={{marginLeft:'3px'}}>Signup</Link></Typography>
 		</Box>
-	      <Box>
-			  <img src={LoginWallpaper} width="200px" alt="" />
-		  </Box>
-	   </div>
-	
+		</div>
 	</React.Fragment>
   )
 }

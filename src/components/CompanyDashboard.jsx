@@ -31,7 +31,7 @@ export default function Company(props) {
            </div> */}
 			<Box sx={{ my: 3, mx: 2 }}>
 				<Typography gutterBottom variant="h4" component="div">
-					Hey, {currentUser && currentUser.email}{' '}
+					Hello, {currentUser && currentUser.email}{' '}
 					<span className="wave">👋</span>
 				</Typography>
 				<Divider variant="middle" />

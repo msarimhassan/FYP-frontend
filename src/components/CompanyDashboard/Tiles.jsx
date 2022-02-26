@@ -1,55 +1,58 @@
 import React from 'react';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
+import AddIcon from '@mui/icons-material/Add';
+import {Link} from 'react-router-dom';
+import EditIcon from '@mui/icons-material/Edit';
+import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import family from '../../images/family.jpg';
-import TourList from './TourList';
+import { styled } from '@mui/material/styles';
+import Divider from '@mui/material/Divider';
+import Typography from "@mui/material/Typography"
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import StarRateIcon from '@mui/icons-material/StarRate';
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#df73ff',
+  ...theme.typography.h4,
+  padding: theme.spacing(1),
+  textAlign: 'left',
+  color: '#fff',
+  width:'300px',
+}));
 
 export default function Tiles() {
 	return (
 		<React.Fragment>
-			<Grid
-				container
-				justifyContent="center"
-				width="80%"
-				sx={{
-					bgcolor: 'rgba(186,104,200,0.5)',
-					borderRadius: 4,
-					ml: 'auto',
-					mr: 'auto'
-				}}
-			>
-				<Grid item lg={2} md={3} sm={5} xs={5}>
-					<Box
-						sx={{
-							textAlign: 'center',
-							borderRadius: 8,
-							boxShadow: 3,
-							backgroundColor: '#F18A15'
-						}}
-					>
-						<img
-							src={family}
-							alt="family"
-							style={{ width: '100%', borderRadius: '20px' }}
-						/>
-						<Typography variant="h6" mt={2} color={'#fff'}>
-							Total Tours
-						</Typography>
-
-						<Typography variant="h3" color={'#fff'}>
-							0
-						</Typography>
-					</Box>
-				</Grid>
-
-				{/* new grid item  */}
-
-				<Grid item lg={8} xs={10}>
-					<TourList />
-				</Grid>
-			</Grid>
+	<Stack direction="row" spacing={2} justifyContent='flex-end' sx={{mr:5}}>
+		   <Link to="/company/addtour" style={{textDecoration:'none'}}><Chip icon={<AddIcon /> } color="secondary" label="Add Tour"  /></Link>
+	   <Link to="/company/addtour" style={{textDecoration:'none'}}><Chip icon={<EditIcon />} color="secondary" label="Manage Tours" /></Link>
+	</Stack>
+	   <Stack
+	   width='80%'
+        direction={{ xs: 'column', sm: 'row' }}
+        divider={<Divider orientation="vertical" flexItem />}
+        spacing={2}
+		justifyContent='center'
+		alignItems='center'
+		sx={{mt:5,bgcolor:'#df73ff',pt:5,pb:5,boxShadow:3,borderRadius:10,ml:'auto',mr:'auto'}}
+		
+      >
+        <Item elevation={0}>
+			<Typography  variant="h4"><ArrowUpwardIcon/>Tours Count</Typography>
+			0
+			<Typography  variant="body2">There are 0 tours in your database</Typography>
+		</Item>
+        <Item elevation={0}>
+			<Typography  variant="h4"><FavoriteIcon/>Liked</Typography>
+		0
+		<Typography  variant="body2">Total liked by our users</Typography>
+		</Item>
+        <Item elevation={0}>
+			<Typography  variant="h4">< StarRateIcon/>Ratings</Typography>
+			0
+			<Typography  variant="body2">Ratings based on experience</Typography>
+		</Item>
+      </Stack>
 		</React.Fragment>
 	);
 }
