@@ -22,7 +22,7 @@ export default function Company(props) {
 	const { setCount, setCompanyData, companyData } =
 		useContext(CompanyContext);
 
-	useEffect(() => {
+	/* useEffect(() => {
 		const fetchdata = async () => {
 			try {
 				console.log('Hello')
@@ -48,12 +48,39 @@ export default function Company(props) {
 		// 	});
 
 		console.log('Hello 2')
-		
+
 	};
 
 	 fetchdata();
+	}, []); */
+
+	useEffect(() => {
+		const fetchData = async() => {
+			try {
+				const email = localStorage.getItem('email');
+				Promise.all([
+					axios.get(
+						`http://localhost:5000/company/tourcount/${email}`
+					),
+					axios.get(
+						`http://localhost:5000/company/getcompanydata/${email}`
+					)
+				])
+					.then(res => {
+						console.log(res);
+						// res is an array that contains responses of above two API calls.
+						// set your state here
+					})
+					.catch(err => {
+						console.log(err);
+					});
+			} catch (err) {
+				console.log(err);
+			}
+		}
+		fetchData();
 	}, []);
-	
+
 	return (
 		<div style={{ backgroundColor: '#F3F3F3' }}>
 			<ResponsiveAppBar pathname={match.path} />

@@ -136,10 +136,11 @@ export default function Login() {
 						)
 						.then(res => {
 							const { isOrg } = res.data;
+							localStorage.setItem('email', data.Email)
 							if (isOrg === 'No') {
 								history.push('/user');
 							} else if (isOrg === 'Yes') {
-								history.push('/company');
+								history.push('/company/dashboard');
 							} else {
 								toast.error('Login Failed', {
 									position: toast.POSITION.TOP_RIGHT

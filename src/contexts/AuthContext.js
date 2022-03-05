@@ -43,6 +43,7 @@ export function AuthProvider({ children }) {
 	function Logout() {
 		signOut(auth)
 			.then(() => {
+				localStorage.removeItem('email');
 				navigate.push('/');
 			})
 			.catch(error => {
