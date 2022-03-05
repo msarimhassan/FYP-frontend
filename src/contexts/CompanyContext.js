@@ -1,33 +1,21 @@
-import React,{useContext, useEffect ,useState} from 'react';
-import axios from 'axios';
-import { useAuth } from './AuthContext';
-  const CompanyContext=React.createContext();
+import React, { useState, createContext } from 'react';
 
-    export function useCompany(){
-        return useContext(CompanyContext);
-    }
-export default function CompanyProvider({children}) {
+const CompanyContext = createContext();
 
-     const {currentUser} =useAuth();
-     const [companyData,setCompanyData]=useState(null);
+const CompanyDataProvider = ({ children }) => {
+	const [companyData, setCompanyData] = useState(null);
+	const [count, setCount] = useState(null);
+	const value = {
+		companyData,
+		setCompanyData,
+		count,
+		setCount
+	};
+	return (
+		<CompanyContext.Provider value={value}>
+			{children}
+		</CompanyContext.Provider>
+	);
+};
 
-    useEffect(()=>{
-         handleData();
-    },[])
-
-
-    const handleData=() =>{
-       axios.get(`http://localhost:5000/company/getcompanydata/${currentUser}`).then(res=>{
-           setCompanyData(res);
-           console.log(companyData);
-           console.log('calling ')
-       })
-    }
-
-    const value={
-      companyData
-    }
-  return (
-    <CompanyContext.Provider value={value}>{children}</CompanyContext.Provider>
-  )
-}
+export { CompanyContext, CompanyDataProvider };

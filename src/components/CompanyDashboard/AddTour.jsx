@@ -18,8 +18,8 @@ import Alert from '@mui/material/Alert';
 import { useAuth } from '../../contexts/AuthContext';
 import LoadingButton from '@mui/lab/LoadingButton';
 import axios from 'axios';
-import { toast ,ToastContainer } from 'react-toastify';
- import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -123,9 +123,10 @@ export default function BasicTabs() {
 		uploadImage(File).then(imgUrl => {
 			setTour({ ...tour, imgUrl });
 			const tourData = {
-				...tour, imgUrl
-			}
-			
+				...tour,
+				imgUrl
+			};
+
 			axios
 				.post(
 					`http://localhost:5000/company/addtour/${currentUser.email}`,
@@ -139,9 +140,9 @@ export default function BasicTabs() {
 						msg: 'Added a new Tour',
 						type: 'success'
 					});
-					 toast.success("Posted", {
-               position: toast.POSITION.TOP_CENTER
-              });
+					toast.success('Posted', {
+						position: toast.POSITION.TOP_CENTER
+					});
 					setLoading(false);
 				});
 		});
@@ -168,7 +169,7 @@ export default function BasicTabs() {
 	};
 	return (
 		<React.Fragment>
-			<ToastContainer/>
+			<ToastContainer />
 			<Typography
 				variant="h4"
 				textAlign="center"

@@ -15,7 +15,8 @@ import { Link } from 'react-router-dom';
 import Logo from '../../images/logo.png';
 import { useAuth } from '../../contexts/AuthContext';
 import { CardHeader } from '@mui/material';
-
+import { CompanyContext } from '../../contexts/CompanyContext';
+import { useContext } from 'react';
 
 const ResponsiveAppBar = props => {
 	const linkStyle = {
@@ -25,6 +26,7 @@ const ResponsiveAppBar = props => {
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const [anchorElUser, setAnchorElUser] = React.useState(null);
 	const { currentUser, Logout } = useAuth();
+	const { companyData } = useContext(CompanyContext);
 
 	const handleOpenNavMenu = event => {
 		setAnchorElNav(event.currentTarget);
@@ -184,13 +186,13 @@ const ResponsiveAppBar = props => {
 						<Tooltip title="Profile">
 							<IconButton
 								onClick={handleOpenUserMenu}
-								sx={{ p: 0,m:0, color: '#fff' }}
+								sx={{ p: 0, m: 0, color: '#fff' }}
 							>
 								<CardHeader
 									avatar={
 										<Avatar>
-											{currentUser &&
-												currentUser.email[0].toUpperCase()}
+											{companyData &&
+												companyData.name[0].toUpperCase()}
 										</Avatar>
 									}
 								/>
@@ -213,12 +215,18 @@ const ResponsiveAppBar = props => {
 							onClose={handleCloseUserMenu}
 						>
 							<MenuItem
-								key="Profile"
+								key="Company Profile"
 								onClick={handleCloseUserMenu}
 							>
-								<Typography textAlign="center">
+								<Link
+									style={{
+										textDecoration: 'none',
+										color: 'black'
+									}}
+									to={`${pathname}/companyprofile`}
+								>
 									Profile
-								</Typography>
+								</Link>
 							</MenuItem>
 							<MenuItem
 								key="Logout"

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import Sidebar from './CompanyDashboard/Sidebar';
 import Tiles from './CompanyDashboard/Tiles';
 import '.././styles/Dashboard.css';
@@ -13,25 +13,53 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useAuth } from '.././contexts/AuthContext';
 import axios from 'axios';
+import { CompanyContext } from '../contexts/CompanyContext';
+import CompanyProfile from './CompanyDashboard/CompanyProfile';
 
 export default function Company(props) {
 	const { match, location, history } = props;
 	const { currentUser } = useAuth();
+	const { setCount, setCompanyData, companyData } =
+		useContext(CompanyContext);
+
+	useEffect(() => {
+		const fetchdata = async () => {
+			try {
+				console.log('Hello')
+				const requestTwo = await axios.get(`http://localhost:5000/company/getcompanydata/${currentUser.email}`);
+				setCompanyData(requestTwo.data);
+				console.log('Saad', requestTwo);
+			} catch (err) {
+				console.log(err)
+			}
+		// let two = `http://localhost:5000/company/getcompanydata/${currentUser.email}`;
+		// const requestTwo = await axios.get(two);
+		// console.log('Saad', requestTwo)
+		// axios
+		// 	.all([requestTwo])
+		// 	.then(
+		// 		axios.spread((...responses) => {
+		// 			const responseTwo = responses[0];
+		// 			setCompanyData(responseTwo.data);
+		// 		})
+		// 	)
+		// 	.catch(errors => {
+		// 		console.log(errors);
+		// 	});
+
+		console.log('Hello 2')
+		
+	};
+
+	 fetchdata();
+	}, []);
+	
 	return (
 		<div style={{ backgroundColor: '#F3F3F3' }}>
 			<ResponsiveAppBar pathname={match.path} />
-			{/* <Sidebar/>
-           <div className='content'>
-             <Switch>
-               <Route exact path="/company">
-               <Tiles heading="Total Tours" info="0" img={arrows}/>
-           </Route>
-           <Route exact path="/addtour" component={AddTour}/>
-             </Switch>
-           </div> */}
 			<Box sx={{ my: 3, mx: 2 }}>
 				<Typography gutterBottom variant="h4" component="div">
-					Hello, {currentUser && currentUser.email}{' '}
+					Hello, {companyData && companyData.name}{' '}
 					<span className="wave">👋</span>
 				</Typography>
 				<Divider variant="middle" />
@@ -57,6 +85,11 @@ export default function Company(props) {
 					exact
 					path={`${match.path}/updatetour`}
 					component={UpdateTour}
+				/>
+				<Route
+					exact
+					path={`${match.path}/companyprofile`}
+					component={CompanyProfile}
 				/>
 			</Switch>
 
