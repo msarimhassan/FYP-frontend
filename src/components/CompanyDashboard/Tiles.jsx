@@ -55,6 +55,34 @@ export default function Tiles() {
 	// 			console.log(errors);
 	// 		});
 	// };
+
+	useEffect(() => {
+		const fetchData = async() => {
+			try {
+				const email = localStorage.getItem('email');
+				Promise.all([
+					axios.get(
+						`http://localhost:5000/company/tourcount/${email}`
+					),
+					axios.get(
+						`http://localhost:5000/company/getcompanydata/${email}`
+					)
+				])
+					.then(res => {
+						console.log(res);
+						// res is an array that contains responses of above two API calls.
+						// set your state here
+					})
+					.catch(err => {
+						console.log(err);
+					});
+			} catch (err) {
+				console.log(err);
+			}
+		}
+		fetchData();
+	}, []);
+
 	return (
 		<React.Fragment>
 			<Stack
