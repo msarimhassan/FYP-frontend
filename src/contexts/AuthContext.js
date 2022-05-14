@@ -5,7 +5,8 @@ import {
 	signInWithEmailAndPassword,
 	sendEmailVerification,
 	sendPasswordResetEmail,
-	signOut
+	signOut,
+	updatePassword
 } from 'firebase/auth';
 import { auth } from '../firebase.js';
 import { useHistory } from 'react-router-dom';
@@ -43,7 +44,8 @@ export function AuthProvider({ children }) {
 	function Logout() {
 		signOut(auth)
 			.then(() => {
-				localStorage.removeItem('email');
+				localStorage.clear();
+
 				navigate.push('/');
 			})
 			.catch(error => {
@@ -51,6 +53,11 @@ export function AuthProvider({ children }) {
 			});
 	}
 
+	//password change function
+
+	function ChangePassword(password) {
+		return updatePassword(auth.currentUser, password);
+	}
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, user => {
 			setCurrentuser(user);
@@ -64,7 +71,8 @@ export function AuthProvider({ children }) {
 		Logout,
 		Login,
 		sendEmail,
-		verificationemail
+		verificationemail,
+		ChangePassword
 	};
 	return (
 		<AuthContext.Provider value={value}>{children}</AuthContext.Provider>

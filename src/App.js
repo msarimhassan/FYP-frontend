@@ -12,6 +12,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import './styles/App.css';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CompanyDataProvider } from './contexts/CompanyContext';
+import { UserDataProvider } from './contexts/UserContext';
 function App() {
 	const theme = createTheme({
 		typography: {
@@ -36,14 +37,16 @@ function App() {
 							component={CompanySignup}
 						/>
 						<Route exact path="/admin" component={Admin} />
-						<Route exact path="/user" component={User} />
+						<UserDataProvider>
+							<Route path="/user" component={User} />
 
-						<CompanyDataProvider>
-							<Route
-								path="/company"
-								component={CompanyDashboard}
-							/>
-						</CompanyDataProvider>
+							<CompanyDataProvider>
+								<Route
+									path="/company"
+									component={CompanyDashboard}
+								/>
+							</CompanyDataProvider>
+						</UserDataProvider>
 					</Switch>
 				</AuthProvider>
 			</ThemeProvider>

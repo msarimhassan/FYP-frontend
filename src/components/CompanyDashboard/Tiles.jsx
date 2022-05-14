@@ -57,7 +57,7 @@ export default function Tiles() {
 	// };
 
 	useEffect(() => {
-		const fetchData = async() => {
+		const fetchData = async () => {
 			try {
 				const email = localStorage.getItem('email');
 				Promise.all([
@@ -69,7 +69,12 @@ export default function Tiles() {
 					)
 				])
 					.then(res => {
-						console.log(res);
+						setCount(res[0].data.count);
+						setCompanyData(res[1].data);
+						localStorage.setItem('CompanyName', res[1].data.name);
+						localStorage.setItem('instaUsername', res[1].data.instaUsername);
+						localStorage.setItem('whatsappNo', res[1].data.whatsappNo);
+						localStorage.setItem('url', res[1].data.url);
 						// res is an array that contains responses of above two API calls.
 						// set your state here
 					})
@@ -79,8 +84,11 @@ export default function Tiles() {
 			} catch (err) {
 				console.log(err);
 			}
-		}
+		};
 		fetchData();
+	}, []);
+	useEffect(() => {
+		console.log('Abdullah Ch');
 	}, []);
 
 	return (

@@ -1,4 +1,6 @@
-import * as React from 'react';
+// User Dashboard app bar
+
+import React, { useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,19 +17,18 @@ import { Link } from 'react-router-dom';
 import Logo from '../../images/logo.png';
 import { useAuth } from '../../contexts/AuthContext';
 import { CardHeader } from '@mui/material';
-import { CompanyContext } from '../../contexts/CompanyContext';
-import { useContext } from 'react';
+import { UserContext } from '../../contexts/UserContext';
 
 const ResponsiveAppBar = props => {
 	const linkStyle = {
 		textDecoration: 'none'
 	};
 	const pathname = props.pathname;
+	const { userData } = useContext(UserContext);
+	const { currentUser, Logout } = useAuth();
+
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const [anchorElUser, setAnchorElUser] = React.useState(null);
-	const { currentUser, Logout } = useAuth();
-	const { companyData } = useContext(CompanyContext);
-	let CompanyName = localStorage.getItem('CompanyName');
 
 	const handleOpenNavMenu = event => {
 		setAnchorElNav(event.currentTarget);
@@ -111,26 +112,16 @@ const ResponsiveAppBar = props => {
 								</MenuItem>
 							</Link>
 
-							<Link to={`${pathname}/addtour`} style={linkStyle}>
-								<MenuItem
-									key="AddTour"
-									onClick={handleCloseNavMenu}
-								>
-									<Typography textAlign="center">
-										AddTour
-									</Typography>
-								</MenuItem>
-							</Link>
 							<Link
-								to={`${pathname}/managetours`}
+								to={`${pathname}/favourite`}
 								style={linkStyle}
 							>
 								<MenuItem
-									key="manageTours"
+									key="favourite"
 									onClick={handleCloseNavMenu}
 								>
 									<Typography textAlign="center">
-										ManageTours
+										Favourites
 									</Typography>
 								</MenuItem>
 							</Link>
@@ -163,22 +154,13 @@ const ResponsiveAppBar = props => {
 								Dashboard
 							</Button>
 						</Link>
-						<Link to={`${pathname}/addtour`} style={linkStyle}>
+						<Link to={`${pathname}/favourite`} style={linkStyle}>
 							<Button
-								key="Add Tour"
+								key="favourite"
 								onClick={handleCloseNavMenu}
 								sx={{ my: 2, color: 'white', display: 'block' }}
 							>
-								Add Tour
-							</Button>
-						</Link>
-						<Link to={`${pathname}/managetours`} style={linkStyle}>
-							<Button
-								key="manage Tour"
-								onClick={handleCloseNavMenu}
-								sx={{ my: 2, color: 'white', display: 'block' }}
-							>
-								Manage Tours
+								Favourites
 							</Button>
 						</Link>
 					</Box>
@@ -192,11 +174,9 @@ const ResponsiveAppBar = props => {
 								<CardHeader
 									avatar={
 										<Avatar>
-											{companyData
-												? companyData.name[0].toUpperCase()
-												: localStorage
-														.getItem('email')[0]
-														.toUpperCase()}
+											{/* {localStorage&&
+												localStorage.getItem('Name')[0].toUpperCase()
+												} */}
 										</Avatar>
 									}
 								/>

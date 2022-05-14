@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -7,10 +7,6 @@ import Box from '@mui/material/Box';
 import { storage } from '../../firebase.js';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { styled } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import Divider from '@mui/material/Divider';
@@ -54,7 +50,7 @@ function a11yProps(index) {
 	};
 }
 
-export default function BasicTabs() {
+export default function AddTour() {
 	const initialValues = {
 		title: '',
 		location: '',
@@ -77,7 +73,10 @@ export default function BasicTabs() {
 	const [tour, setTour] = useState(initialValues);
 	const [value, setValue] = React.useState(0);
 	const [File, setFile] = useState(null);
-
+	let instaUsername=localStorage.getItem('instaUsername');
+	let whatsappNo=localStorage.getItem('whatsappNo');
+	let webUrl=localStorage.getItem('url');
+   let CompanyName=localStorage.getItem('CompanyName');
 	const uploadImage = async file => {
 		const promise = new Promise((resolve, reject) => {
 			if (!file) resolve();
@@ -124,7 +123,11 @@ export default function BasicTabs() {
 			setTour({ ...tour, imgUrl });
 			const tourData = {
 				...tour,
-				imgUrl
+				imgUrl,
+				whatsappNo,
+				instaUsername,
+				webUrl,
+				CompanyName
 			};
 
 			axios

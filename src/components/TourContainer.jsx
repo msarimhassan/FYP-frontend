@@ -39,9 +39,13 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoneyIcon from '@mui/icons-material/Money';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { NavLink,Link } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
-
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import Chip from '@mui/material/Chip';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import LinkIcon from '@mui/icons-material/Link';
 const ExpandMore = styled(props => {
 	const { expand, ...other } = props;
 	return <IconButton {...other} />;
@@ -63,8 +67,17 @@ export default function TourContainer(props) {
 		imgUrl,
 		location,
 		price,
-		title
+		title,
+		companyName,
+		whatsappNo,
+		instaUsername,
+		url
 	} = props.tour;
+	 console.log(whatsappNo);
+	 //Converting my whatsappNo in international format
+	 let newNumber=whatsappNo.substr(1);
+	 newNumber='92'+newNumber;
+	 	console.log(newNumber);
 	const [expanded, setExpanded] = React.useState(false);
 
 	const handleExpandClick = () => {
@@ -82,7 +95,7 @@ export default function TourContainer(props) {
 						{email[0].toUpperCase()}
 					</Avatar>
 				}
-				title={title}
+				title={props.flag?title:companyName}
 				subheader={date}
 			/>
 			<CardMedia
@@ -116,18 +129,21 @@ export default function TourContainer(props) {
 					<MoneyIcon color="success" />
 					{price}Rs
 				</Typography>
+					<Typography variant="h6" color="text.secondary">
+					Starting from: {date}
+				</Typography>
 				<Typography variant="h6" color="text.secondary">
 					Duration : {duration} days
 				</Typography>
 			</CardContent>
 			<CardActions disableSpacing>
-				<button id={id} onClick={props.deletefunction}>
+				{props.flag ? <Button id={id} onClick={props.deletefunction} color='error' variant='contained'>
 					Delete
-				</button>
+				</Button> : <Button color='error'>Like<FavoriteBorderOutlinedIcon color='error'/></Button>}
 
-				<Link to={{ pathname: 'updatetour', state: { id: id } }}>
+				{props.flag ?<Button color='success' variant='contained' sx={{ml:1}}><Link style={{textDecoration:'none' ,color:'white'}} to={{ pathname: 'updatetour', state: { id: id } }}>
 					Update
-				</Link>
+				</Link></Button>:null}
 				<ExpandMore
 					expand={expanded}
 					onClick={handleExpandClick}
@@ -141,6 +157,16 @@ export default function TourContainer(props) {
 				<CardContent>
 					<Typography paragraph>Details</Typography>
 					<Typography paragraph>{details}</Typography>
+					
+			    {props.flag?null:<Typography>Contact Us</Typography>}
+					{props.flag?null:	
+						<Stack direction='row' spacing={2} sx={{mt:1}}>
+					<a href={`https://wa.me/${newNumber}`} target='_blank'><Chip color='success' icon={<WhatsAppIcon/>}/></a>
+					
+					<a href={`https://www.instagram.com/${instaUsername}` }target='_blank'><InstagramIcon/></a>
+					<a href={url} target='_blank'><LinkIcon/></a>
+
+					</Stack>}
 				</CardContent>
 			</Collapse>
 		</Card>

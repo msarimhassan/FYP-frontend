@@ -153,17 +153,7 @@ export default function UpdateTour(props) {
 		<React.Fragment>
 			<ToastContainer />
 			{render ? (
-				<Box
-					style={{ backgroundColor: '#ffff' }}
-					sx={{
-						ml: 'auto',
-						mr: 'auto',
-						width: '50%',
-						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'center'
-					}}
-				>
+			  <div style={{display:'flex',justifyContent:'center',height:'100vh'}}>
 					<MyLoader
 						style={{
 							justifyContent: 'center',
@@ -171,7 +161,7 @@ export default function UpdateTour(props) {
 						}}
 						id={1}
 					/>
-				</Box>
+				</div>
 			) : (
 				<Box
 					component="form"

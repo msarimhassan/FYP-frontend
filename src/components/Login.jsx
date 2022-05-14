@@ -1,97 +1,3 @@
-// import axios from 'axios';
-// import React, { useRef, useState } from 'react';
-// import { Link, useHistory } from 'react-router-dom';
-
-// export default function Login() {
-// 	const [loading, setLoading] = useState(false);
-// 	const emailRef = useRef();
-// 	const passwordRef = useRef();
-
-// 	const [error, setError] = useState();
-
-// 	const handleSubmit = async e => {
-// 		e.preventDefault();
-
-// 		try {
-// 			setError('');
-
-// 	};
-
-// 	return (
-// 		<React.Fragment>
-// 			<Navbar />
-// 			<div className="parent">
-// 				<div className="Login-form" style={{ marginTop: '50px' }}>
-// 					<div style={{ marginLeft: '22px' }}>
-// 						<h1>Log in.</h1>
-// 						<p
-// 							style={{
-// 								color: 'rgba(112,112,112,0.5)',
-// 								fontWeight: 'bolder'
-// 							}}
-// 						>
-// 							Login with your data that you entered during your
-// 							registration
-// 						</p>
-// 						<h4 style={{ color: 'red' }}>{error}</h4>
-// 					</div>
-// 					<form
-// 						method="POST"
-// 						onSubmit={handleSubmit}
-// 						style={{ marginTop: '8px' }}
-// 					>
-// 						<div>
-// 							<label htmlFor="email">Your e-mail</label>
-// 							<br />
-// 							<input
-// 								type="email"
-// 								name="email"
-// 								id="email"
-// 								ref={emailRef}
-// 								placeholder="Enter your email"
-// 								className="input-box"
-// 							/>
-// 						</div>
-// 						<br />
-// 						<div>
-// 							<label htmlFor="password">Password</label>
-// 							<br />
-// 							<input
-// 								type="password"
-// 								name="password"
-// 								id="password"
-// 								ref={passwordRef}
-// 								placeholder="Enter your password"
-// 								className="input-box"
-// 							/>
-// 						</div>
-// 						<br />
-// 						<input
-// 							type="submit"
-// 							value="Login"
-// 							name="Login"
-// 							id="Login"
-// 							className="Login-Button"
-// 							disabled={loading}
-// 						/>
-// 						<br />
-// 						<Link
-// 							style={{ marginLeft: '52px' }}
-// 							to="/forgetpassword"
-// 						>
-// 							Forgot Password?
-// 						</Link>
-// 						<p style={{ marginLeft: '10px' }}>
-// 							Dont have an account{' '}
-// 							<Link to="/signup">Signup</Link>
-// 						</p>
-// 					</form>
-// 				</div>
-// 			</div>
-// 		</React.Fragment>
-// 	);
-// }
-
 import React, { useState } from 'react';
 import Navbar from './Navbar';
 import Box from '@mui/material/Box';
@@ -100,14 +6,11 @@ import TextField from '@mui/material/TextField';
 import { useForm } from 'react-hook-form';
 import LoadingButton from '@mui/lab/LoadingButton';
 import LoginWallpaper from '../images/loginWallpaper.png';
-import PropTypes from 'prop-types';
-import { flexbox } from '@mui/system';
 import '../styles/Login.css';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Grid from '@mui/material/Grid';
 import '../styles/Login.css';
 import { Link } from 'react-router-dom';
 
@@ -125,7 +28,6 @@ export default function Login() {
 	} = useForm();
 
 	const onSubmit = async data => {
-		console.log(data);
 		setLoading(true);
 		try {
 			await Login(data.Email, data.Password).then(res => {
@@ -136,10 +38,12 @@ export default function Login() {
 						)
 						.then(res => {
 							const { isOrg } = res.data;
-							localStorage.setItem('email', data.Email)
+
 							if (isOrg === 'No') {
-								history.push('/user');
+								localStorage.setItem('email', data.Email);
+								history.push('/user/dashboard');
 							} else if (isOrg === 'Yes') {
+								localStorage.setItem('email', data.Email);
 								history.push('/company/dashboard');
 							} else {
 								toast.error('Login Failed', {
@@ -148,10 +52,9 @@ export default function Login() {
 							}
 						});
 				} else {
-					Logout().then(() => {
-						toast.error('Please verify your Account', {
-							position: toast.POSITION.TOP_RIGHT
-						});
+					Logout();
+					toast.error('Please verify your Account', {
+						position: toast.POSITION.TOP_RIGHT
 					});
 				}
 			});

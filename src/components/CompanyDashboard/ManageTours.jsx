@@ -25,8 +25,9 @@ export default function ManageTours() {
 	}, tours);
 
 	const fetchData = async () => {
+		const email = localStorage.getItem('email');
 		axios
-			.get(`http://localhost:5000/company/gettours/${currentUser.email}`)
+			.get(`http://localhost:5000/company/gettours/${email}`)
 			.then(res => {
 				const data = res.data;
 				setTours([...tours, ...data]);
@@ -91,6 +92,7 @@ export default function ManageTours() {
 					{tours.length > 0 ? (
 						tours.map(tour => (
 							<TourContainer
+							  flag={true}
 								tour={tour}
 								deletefunction={handleDelete}
 							/>
@@ -102,10 +104,12 @@ export default function ManageTours() {
 					)}
 				</Box>
 			) : (
-				<MyLoader
+				<div style={{display:'flex',justifyContent:'center',height:'100vh'}}>
+					<MyLoader
 					style={{ justifyContent: 'center', alignItems: 'center' }}
 					id={2}
 				/>
+				</div>
 			)}
 		</React.Fragment>
 	);
