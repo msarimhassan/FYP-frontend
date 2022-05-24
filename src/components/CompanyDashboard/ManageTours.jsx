@@ -92,7 +92,7 @@ export default function ManageTours() {
 					{tours.length > 0 ? (
 						tours.map(tour => (
 							<TourContainer
-							  flag={true}
+								flag={true}
 								tour={tour}
 								deletefunction={handleDelete}
 							/>
@@ -104,11 +104,20 @@ export default function ManageTours() {
 					)}
 				</Box>
 			) : (
-				<div style={{display:'flex',justifyContent:'center',height:'100vh'}}>
+				<div
+					style={{
+						display: 'flex',
+						justifyContent: 'center',
+						height: '100vh'
+					}}
+				>
 					<MyLoader
-					style={{ justifyContent: 'center', alignItems: 'center' }}
-					id={2}
-				/>
+						style={{
+							justifyContent: 'center',
+							alignItems: 'center'
+						}}
+						id={2}
+					/>
 				</div>
 			)}
 		</React.Fragment>

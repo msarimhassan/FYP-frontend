@@ -174,9 +174,9 @@ const ResponsiveAppBar = props => {
 								<CardHeader
 									avatar={
 										<Avatar>
-											{/* {localStorage&&
-												localStorage.getItem('Name')[0].toUpperCase()
-												} */}
+											{localStorage&&
+												localStorage.getItem('email')[0].toUpperCase()
+												}
 										</Avatar>
 									}
 								/>
@@ -207,7 +207,7 @@ const ResponsiveAppBar = props => {
 										textDecoration: 'none',
 										color: 'black'
 									}}
-									to={`${pathname}/companyprofile`}
+									to={`${pathname}/userprofile`}
 								>
 									Profile
 								</Link>

@@ -73,10 +73,10 @@ export default function AddTour() {
 	const [tour, setTour] = useState(initialValues);
 	const [value, setValue] = React.useState(0);
 	const [File, setFile] = useState(null);
-	let instaUsername=localStorage.getItem('instaUsername');
-	let whatsappNo=localStorage.getItem('whatsappNo');
-	let webUrl=localStorage.getItem('url');
-   let CompanyName=localStorage.getItem('CompanyName');
+	let instaUsername = localStorage.getItem('instaUsername');
+	let whatsappNo = localStorage.getItem('whatsappNo');
+	let webUrl = localStorage.getItem('url');
+	let CompanyName = localStorage.getItem('CompanyName');
 	const uploadImage = async file => {
 		const promise = new Promise((resolve, reject) => {
 			if (!file) resolve();

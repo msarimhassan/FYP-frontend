@@ -153,7 +153,13 @@ export default function UpdateTour(props) {
 		<React.Fragment>
 			<ToastContainer />
 			{render ? (
-			  <div style={{display:'flex',justifyContent:'center',height:'100vh'}}>
+				<div
+					style={{
+						display: 'flex',
+						justifyContent: 'center',
+						height: '100vh'
+					}}
+				>
 					<MyLoader
 						style={{
 							justifyContent: 'center',

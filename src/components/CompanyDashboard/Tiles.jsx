@@ -72,8 +72,14 @@ export default function Tiles() {
 						setCount(res[0].data.count);
 						setCompanyData(res[1].data);
 						localStorage.setItem('CompanyName', res[1].data.name);
-						localStorage.setItem('instaUsername', res[1].data.instaUsername);
-						localStorage.setItem('whatsappNo', res[1].data.whatsappNo);
+						localStorage.setItem(
+							'instaUsername',
+							res[1].data.instaUsername
+						);
+						localStorage.setItem(
+							'whatsappNo',
+							res[1].data.whatsappNo
+						);
 						localStorage.setItem('url', res[1].data.url);
 						// res is an array that contains responses of above two API calls.
 						// set your state here

@@ -5,6 +5,7 @@ import Dashboard from './UserDashboard/Dashboard';
 import { Switch, Route } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
 import { Divider, Typography, Box } from '@mui/material';
+import UserProfile from "./UserDashboard/UserProfile";
 
 export default function User(props) {
 	const { match } = props;
@@ -29,6 +30,11 @@ export default function User(props) {
 					exact
 					path={`${match.path}/favourite`}
 					component={Favourite}
+				/>
+				<Route
+					exact
+					path={`${match.path}/userprofile`}
+					component={UserProfile}
 				/>
 			</Switch>
 		</>
