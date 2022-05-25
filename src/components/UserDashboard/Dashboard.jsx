@@ -5,6 +5,11 @@ import { UserContext } from '../../contexts/UserContext';
 import TourContainer from '../TourContainer';
 import MyLoader from '../MyLoader';
 import SearchBox from './SearchBox';
+import { TextField, InputAdornment } from '@mui/material';
+import PlaceIcon from '@mui/icons-material/Place';
+import DateRangeIcon from '@mui/icons-material/DateRange';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+
 export default function Dashboard() {
 	const { currentUser } = useAuth();
 	const [tours, setTours] = useState([]);
@@ -53,21 +58,26 @@ export default function Dashboard() {
 	// };
 
 	const filterTours = e => {
-        //  const { name, value } = e.target;
-		//  switch (name) {
-		// 		case 'location':
-		// 			 const newarray = tours.map(item => {
-		// 					return item.location.includes(value);
-		// 				});
-		// 				setTours(newarray);
-		// 			break;
-		// 		case 'price':
-		// 			console.log('hello from price');
-		// 			break;
-		// 		case 'days':
-		// 			console.log('hello from days');
-		// 			break;
-		// 	}
+         const { name, value } = e.target;
+		  if(name==='location')
+		  {
+			const array=  tours.filter((item)=>{
+                if(item.location.includes(value))
+				{
+					return item;
+				}
+				else{
+					return item;
+				}
+			  })
+
+			  console.log(array);
+	          setTours(array);
+		  }
+		  else if(name==='days')
+		  {
+			  console.log('days')
+		  }
 		
 	
 	}
@@ -77,7 +87,54 @@ export default function Dashboard() {
 	}
 	return (
 		<>
-			<SearchBox filterTours={filterTours} />
+			<div style={{textAlign:'center'}}>
+				<TextField
+					placeholder="Place"
+					onChange={e => {
+						filterTours(e);
+					}}
+					variant="filled"
+					name="location"
+					InputProps={{
+						startAdornment: (
+							<InputAdornment position="start">
+								<PlaceIcon color="secondary" />
+							</InputAdornment>
+						)
+					}}
+				/>
+				<TextField
+					placeholder="Days"
+					variant="filled"
+					name="days"
+					onChange={e => {
+						filterTours(e);
+					}}
+					InputProps={{
+						startAdornment: (
+							<InputAdornment position="start">
+								<DateRangeIcon color="secondary" />
+							</InputAdornment>
+						)
+					}}
+				/>
+				<TextField
+					placeholder="Price"
+					variant="filled"
+					name="price"
+					onChange={e => {
+						filterTours(e);
+					}}
+					InputProps={{
+						startAdornment: (
+							<InputAdornment position="start">
+								<AttachMoneyIcon color="secondary" />
+							</InputAdornment>
+						)
+					}}
+				/>
+			</div>
+			{/* <SearchBox filterTours={filterTours} /> */}
 			{loading ? (
 				<div
 					style={{
