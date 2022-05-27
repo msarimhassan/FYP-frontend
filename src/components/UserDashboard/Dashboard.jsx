@@ -13,7 +13,9 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 export default function Dashboard() {
 	const { currentUser } = useAuth();
 	const [tours, setTours] = useState([]);
+	const [searchedTours, setSearchedTours] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [search, setSearch] = useState('');
 	const { userData, setUserData } = useContext(UserContext);
 
 	let email = localStorage.getItem('email');
@@ -44,53 +46,46 @@ export default function Dashboard() {
 		};
 		fetchData();
 	}, []);
-	// const filterTours = value => {
-	// 	console.log('filter tours', value);
-	// 	const newarray = tours.filter(tour => {
-	// 		return (
-	// 			tour.location === value.location ||
-	// 			tour.duration === value.days ||
-	// 			tour.price === value.price
-	// 		);
-	// 	});
-	// 	console.log('sort', newarray);
-	// 	setTours(newarray);
-	// };
 
 	const filterTours = e => {
-         const { name, value } = e.target;
-		  if(name==='location')
-		  {
-			const array=  tours.filter((item)=>{
-                if(item.location.includes(value))
-				{
+		const { name, value } = e.target;
+		if (name === 'location') {
+			const array = tours.filter(item => {
+				if (item.location.toLowerCase().includes(value.toLowerCase())) {
 					return item;
 				}
-				else{
-					return item;
-				}
-			  })
+			});
 
-			  console.log(array);
-	          setTours(array);
-		  }
-		  else if(name==='days')
-		  {
-			  console.log('days')
-		  }
-		
-	
-	}
-	// Dummy function to handle data 
-	const handleDelete = (id) => {
+			console.log({ array });
+			setSearchedTours(array);
+		} else if (name === 'days') {
+			console.log('days');
+		}
+	};
+	// Dummy function to handle data
+	const handleDelete = id => {};
 
-	}
+	const ListMap = ({ data }) => {
+		return data.map(tour => {
+			return (
+				<TourContainer
+					operation="AddToFavourite"
+					flag={false}
+					tour={tour}
+					key={tour.id}
+					handleDelete={handleDelete}
+				/>
+			);
+		});
+	};
+
 	return (
 		<>
-			<div style={{textAlign:'center'}}>
+			<div style={{ textAlign: 'center' }}>
 				<TextField
 					placeholder="Place"
 					onChange={e => {
+						setSearch(e.target.value);
 						filterTours(e);
 					}}
 					variant="filled"
@@ -162,17 +157,7 @@ export default function Dashboard() {
 						justifyContent: 'center'
 					}}
 				>
-					{tours.map(tour => {
-						return (
-							<TourContainer
-								operation="AddToFavourite"
-								flag={false}
-								tour={tour}
-								key={tour.id}
-								handleDelete={handleDelete}
-							/>
-						);
-					})}
+					<ListMap data={search ? searchedTours : tours} />
 				</div>
 			)}
 		</>
