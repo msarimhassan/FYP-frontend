@@ -4,7 +4,6 @@ import { useAuth } from '../../contexts/AuthContext';
 import { UserContext } from '../../contexts/UserContext';
 import TourContainer from '../TourContainer';
 import MyLoader from '../MyLoader';
-import SearchBox from './SearchBox';
 import { TextField, InputAdornment } from '@mui/material';
 import PlaceIcon from '@mui/icons-material/Place';
 import DateRangeIcon from '@mui/icons-material/DateRange';
@@ -129,7 +128,7 @@ export default function Dashboard() {
 					}}
 				/>
 			</div>
-			{/* <SearchBox filterTours={filterTours} /> */}
+		
 			{loading ? (
 				<div
 					style={{

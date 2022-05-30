@@ -8,6 +8,10 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import Navbar from './Navbar';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
 
 export default function CompanySignup() {
 	const [error, setError] = useState({
@@ -17,6 +21,11 @@ export default function CompanySignup() {
 	});
 	const { Signup, verificationemail } = useAuth();
 	const [loading, setLoading] = useState(false);
+	 const [showPassword, setshowPassword] = useState(false);
+
+		const handleClickShowPassword = () => {
+			setshowPassword(!showPassword);
+		};
 	const {
 		register,
 		handleSubmit,
@@ -124,13 +133,24 @@ export default function CompanySignup() {
 					label="Company Name"
 					variant="outlined"
 					color="secondary"
-					{...register('CompanyName', { required: true })}
+					{...register('CompanyName', {
+						required: true,
+						pattern:
+							/^(?!\s)(?!.*\s$)(?=.*[a-zA-Z])[a-zA-Z0-9 '&()]{2,}$/
+					})}
 					sx={{ mt: 3 }}
 				/>
 				<br />
-				{errors.CompanyName && (
-					<span style={{ color: 'red' }}>This field is required</span>
-				)}
+				{errors.CompanyName &&
+					errors.CompanyName.type === 'required' && (
+						<span style={{ color: 'red' }}>
+							This field is required
+						</span>
+					)}
+				{errors.CompanyName &&
+					errors.CompanyName.type === 'pattern' && (
+						<span style={{ color: 'red' }}>Enter a valid name</span>
+					)}
 				<br />
 				<TextField
 					fullWidth
@@ -142,14 +162,23 @@ export default function CompanySignup() {
 					{...register('CompanyEmail', {
 						required: true,
 						pattern:
-							/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+							/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 					})}
 					sx={{ mt: 3 }}
 				/>
 				<br />
-				{errors.CompanyEmail && (
-					<span style={{ color: 'red' }}>Enter a valid Email</span>
-				)}
+				{errors.CompanyEmail &&
+					errors.CompanyEmail.type === 'required' && (
+						<span style={{ color: 'red' }}>
+							This field is required
+						</span>
+					)}
+				{errors.CompanyEmail &&
+					errors.CompanyEmail.type === 'pattern' && (
+						<span style={{ color: 'red' }}>
+							Enter a valid email
+						</span>
+					)}
 				<br />
 				<TextField
 					fullWidth
@@ -173,14 +202,34 @@ export default function CompanySignup() {
 					id="outlined-basic"
 					label="Password"
 					variant="outlined"
+					type={showPassword ? 'text' : 'password'}
 					color="secondary"
-					{...register('Password', { required: true, min: 8 })}
+					{...register('Password', { required: true, minLength: 8 })}
 					sx={{ mt: 3 }}
+					InputProps={{
+						endAdornment: (
+							<InputAdornment position="end">
+								<IconButton
+									aria-label="toggle password visibility"
+									onClick={handleClickShowPassword}
+								>
+									{showPassword ? (
+										<VisibilityOff />
+									) : (
+										<Visibility />
+									)}
+								</IconButton>
+							</InputAdornment>
+						)
+					}}
 				/>
 				<br />
-				{errors.CompanyName && (
+				{errors.Password && errors.Password.type === 'required' && (
+					<span style={{ color: 'red' }}>This field is required</span>
+				)}
+				{errors.Password && errors.Password.type === 'minLength' && (
 					<span style={{ color: 'red' }}>
-						Password must be 8 characters
+						Password must have at least 8 characters
 					</span>
 				)}
 				<br />
@@ -191,12 +240,19 @@ export default function CompanySignup() {
 					label="Website URL"
 					variant="outlined"
 					color="secondary"
-					{...register('Url', { required: true })}
+					{...register('Url', {
+						required: true,
+						pattern:
+							/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+					})}
 					sx={{ mt: 3 }}
 				/>
 				<br />
-				{errors.Url && (
+				{errors.Url && errors.Url.type === 'required' && (
 					<span style={{ color: 'red' }}>This field is required</span>
+				)}
+				{errors.Url && errors.Url.type === 'pattern' && (
+					<span style={{ color: 'red' }}>Enter a valid Url</span>
 				)}
 				<br />
 				<TextField
@@ -206,12 +262,20 @@ export default function CompanySignup() {
 					label="Whatsapp Number"
 					variant="outlined"
 					color="secondary"
-					{...register('WhatsappNo', { required: true })}
+					{...register('WhatsappNo', {
+						required: true,
+						pattern: /^((\+92))(3)([0-9]{9})$/
+					})}
 					sx={{ mt: 3 }}
 				/>
 				<br />
-				{errors.WhatsappNo && (
+				{errors.WhatsappNo && errors.WhatsappNo.type === 'required' && (
 					<span style={{ color: 'red' }}>This field is required</span>
+				)}
+				{errors.WhatsappNo && errors.WhatsappNo.type === 'pattern' && (
+					<span style={{ color: 'red' }}>
+						Enter a valid number +923*********
+					</span>
 				)}
 				<br />
 				<TextField
@@ -221,12 +285,18 @@ export default function CompanySignup() {
 					label="Instagram UserName"
 					variant="outlined"
 					color="secondary"
-					{...register('InstaName', { required: true })}
+					{...register('InstaName', {
+						required: true,
+						pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/
+					})}
 					sx={{ mt: 3 }}
 				/>
 				<br />
-				{errors.InstaName && (
+				{errors.InstaName && errors.InstaName.type === 'required' && (
 					<span style={{ color: 'red' }}>This field is required</span>
+				)}
+				{errors.InstaName && errors.InstaName.type === 'pattern' && (
+					<span style={{ color: 'red' }}>Enter a valid username</span>
 				)}
 				<br />
 				<LoadingButton

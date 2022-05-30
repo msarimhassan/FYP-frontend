@@ -13,6 +13,10 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/Login.css';
 import { Link } from 'react-router-dom';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
 
 import { useAuth } from '../contexts/AuthContext';
 
@@ -26,7 +30,11 @@ export default function Login() {
 		watch,
 		formState: { errors }
 	} = useForm();
+  const [showPassword,setshowPassword]=useState(false);
 
+  const handleClickShowPassword=()=>{
+        setshowPassword(!showPassword);
+  }
 	const onSubmit = async data => {
 		setLoading(true);
 		try {
@@ -98,13 +106,22 @@ export default function Login() {
 						variant="outlined"
 						color="secondary"
 						fullWidth
-						{...register('Email', { required: true })}
+						{...register('Email', {
+							required: true,
+							pattern:
+								/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+						})}
 						error={!!errors.Email}
 					/>
 					<br />
-					{errors.Email && (
+					{errors.Email && errors.Email.type === 'required' && (
 						<span style={{ color: 'red' }}>
 							This field is required
+						</span>
+					)}
+					{errors.Email && errors.Email.type === 'pattern' && (
+						<span style={{ color: 'red' }}>
+							Enter a valid email
 						</span>
 					)}
 					<br />
@@ -114,17 +131,43 @@ export default function Login() {
 						label="Password"
 						variant="outlined"
 						color="secondary"
-						type="Password"
+						type={showPassword ? 'text' : 'password'}
 						fullWidth
-						{...register('Password', { required: true })}
+						{...register('Password', {
+							required: true,
+							minLength: 6
+						})}
 						error={!!errors.Password}
+						InputProps={{
+							endAdornment:(
+							<InputAdornment position="end">
+								<IconButton
+									aria-label="toggle password visibility"
+									onClick={handleClickShowPassword}
+								>
+									{showPassword ? (
+										<VisibilityOff />
+									) : (
+										<Visibility />
+									)}
+								</IconButton>
+							</InputAdornment>
+							)
+						}}
+						
 					/>
 					<br />
-					{errors.Password && (
+					{errors.Password && errors.Password.type === 'required' && (
 						<span style={{ color: 'red' }}>
 							This field is required
 						</span>
 					)}
+					{errors.Password &&
+						errors.Password.type === 'minLength' && (
+							<span style={{ color: 'red' }}>
+								Password must have at least 6 characters
+							</span>
+						)}
 
 					<Typography textAlign="right" sx={{ mt: 1 }}>
 						<Link to="forgetpassword">Forgot Password?</Link>
