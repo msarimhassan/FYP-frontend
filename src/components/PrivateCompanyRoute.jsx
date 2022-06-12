@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Route, Redirect } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 
-export default function PrivateRoute({ children }) {
+export default function PrivateCompanyRoute({ children }) {
 	const [isOrg, setIsOrg] = useState(false);
 	const { currentUser } = useAuth();
 
@@ -14,6 +14,7 @@ export default function PrivateRoute({ children }) {
 			}
 		}
 	});
+	console.log('company private route');
 
-	return <>{currentUser && !isOrg ? children : <Redirect to="/" />}</>;
+	return <>{currentUser && isOrg ? children : <Redirect to="/" />}</>;
 }

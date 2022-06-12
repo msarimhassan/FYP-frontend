@@ -153,9 +153,9 @@ export default function Signup() {
 										onClick={handleClickShowPassword}
 									>
 										{showPassword ? (
-											<VisibilityOff />
-										) : (
 											<Visibility />
+										) : (
+											<VisibilityOff />
 										)}
 									</IconButton>
 								</InputAdornment>
@@ -197,9 +197,9 @@ export default function Signup() {
 										onClick={handleClickShowPassword2}
 									>
 										{showPassword2 ? (
-											<VisibilityOff />
-										) : (
 											<Visibility />
+										) : (
+											<VisibilityOff />
 										)}
 									</IconButton>
 								</InputAdornment>

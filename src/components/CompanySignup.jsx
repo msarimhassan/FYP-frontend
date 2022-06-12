@@ -214,9 +214,9 @@ export default function CompanySignup() {
 									onClick={handleClickShowPassword}
 								>
 									{showPassword ? (
-										<VisibilityOff />
-									) : (
 										<Visibility />
+									) : (
+										<VisibilityOff />
 									)}
 								</IconButton>
 							</InputAdornment>

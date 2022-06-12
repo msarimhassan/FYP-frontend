@@ -15,6 +15,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { CompanyContext } from '../../contexts/CompanyContext';
 import axios from 'axios';
 import ProfileCard from '../ProfileCard';
+import Graph from './Graph';
 
 const Item = styled(Paper)(({ theme }) => ({
 	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#df73ff',
@@ -181,7 +182,10 @@ export default function Tiles() {
 				<Item sx={{ bgcolor: ' #D63964', p: 3 }}>
 					<ProfileCard />
 				</Item>
-				<Item>Graph</Item>
+				<Item>
+					Graph
+					<Graph />
+				</Item>
 			</Stack>
 		</React.Fragment>
 	);

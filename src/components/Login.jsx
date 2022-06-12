@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -17,8 +17,8 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
-
 import { useAuth } from '../contexts/AuthContext';
+import OneSignalReact from 'react-onesignal';
 
 export default function Login() {
 	const [loading, setLoading] = useState(false);
@@ -30,11 +30,13 @@ export default function Login() {
 		watch,
 		formState: { errors }
 	} = useForm();
-  const [showPassword,setshowPassword]=useState(false);
+	const [showPassword, setshowPassword] = useState(false);
 
-  const handleClickShowPassword=()=>{
-        setshowPassword(!showPassword);
-  }
+	//make a useEffect to initialize one signal
+
+	const handleClickShowPassword = () => {
+		setshowPassword(!showPassword);
+	};
 	const onSubmit = async data => {
 		setLoading(true);
 		try {
@@ -46,6 +48,7 @@ export default function Login() {
 						)
 						.then(res => {
 							const { isOrg } = res.data;
+							localStorage.setItem('isOrg', isOrg);
 
 							if (isOrg === 'No') {
 								localStorage.setItem('email', data.Email);
@@ -139,22 +142,21 @@ export default function Login() {
 						})}
 						error={!!errors.Password}
 						InputProps={{
-							endAdornment:(
-							<InputAdornment position="end">
-								<IconButton
-									aria-label="toggle password visibility"
-									onClick={handleClickShowPassword}
-								>
-									{showPassword ? (
-										<VisibilityOff />
-									) : (
-										<Visibility />
-									)}
-								</IconButton>
-							</InputAdornment>
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={handleClickShowPassword}
+									>
+										{showPassword ? (
+											<Visibility />
+										) : (
+											<VisibilityOff />
+										)}
+									</IconButton>
+								</InputAdornment>
 							)
 						}}
-						
 					/>
 					<br />
 					{errors.Password && errors.Password.type === 'required' && (
