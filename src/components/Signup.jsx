@@ -68,7 +68,10 @@ export default function Signup() {
 		<>
 			<ToastContainer />
 			<Navbar />
-			<div className="parent">
+			<div
+				className="parent"
+				style={{ position: 'absolute', top: '16%', left: '13%' }}
+			>
 				<Box
 					component="form"
 					id="signup"

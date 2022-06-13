@@ -98,9 +98,11 @@ export default function ManageTours() {
 							/>
 						))
 					) : (
-						<Typography variant="h1" sx={{ textAlign: 'center' }}>
-							No tours to display
-						</Typography>
+						<Box sx={{ textAlign:'center', height: '100vh' }}>
+							<Typography variant="h1">
+								No tours to display
+							</Typography>
+						</Box>
 					)}
 				</Box>
 			) : (

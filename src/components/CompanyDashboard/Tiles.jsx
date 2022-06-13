@@ -71,6 +71,7 @@ export default function Tiles() {
 				])
 					.then(res => {
 						setCount(res[0].data.count);
+						console.log(res[1].data);
 						setCompanyData(res[1].data);
 						localStorage.setItem('CompanyName', res[1].data.name);
 						localStorage.setItem(

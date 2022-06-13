@@ -18,7 +18,6 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import { useAuth } from '../contexts/AuthContext';
-import OneSignalReact from 'react-onesignal';
 
 export default function Login() {
 	const [loading, setLoading] = useState(false);
@@ -81,7 +80,7 @@ export default function Login() {
 		<React.Fragment>
 			<Navbar />
 			<ToastContainer />
-			<div className="login-container">
+			<div className="login-container" >
 				<Box>
 					<img
 						src={LoginWallpaper}

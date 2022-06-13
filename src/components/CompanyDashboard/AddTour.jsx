@@ -77,6 +77,7 @@ export default function AddTour() {
 	let whatsappNo = localStorage.getItem('whatsappNo');
 	let webUrl = localStorage.getItem('url');
 	let CompanyName = localStorage.getItem('CompanyName');
+	let CompanyEmail = localStorage.getItem('email');
 	const uploadImage = async file => {
 		const promise = new Promise((resolve, reject) => {
 			if (!file) resolve();
@@ -116,23 +117,25 @@ export default function AddTour() {
 	};
 
 	const handleSubmit = async e => {
+		console.log('CompanyEmail',CompanyEmail)
 		setLoading(true);
 		e.preventDefault();
 
 		uploadImage(File).then(imgUrl => {
-			setTour({ ...tour, imgUrl });
+			setTour({ ...tour, imgUrl ,CompanyEmail});
 			const tourData = {
 				...tour,
 				imgUrl,
 				whatsappNo,
 				instaUsername,
 				webUrl,
-				CompanyName
+				CompanyName,
 			};
+			console.log(tourData);
 
 			axios
 				.post(
-					`http://localhost:5000/company/addtour/${currentUser.email}`,
+					`http://localhost:5000/company/addtour/${CompanyEmail}`,
 					tourData
 				)
 				.then(res => {

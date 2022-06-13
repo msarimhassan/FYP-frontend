@@ -122,187 +122,201 @@ export default function NestedList() {
 	return (
 		<>
 			<ToastContainer />
-			<List
-				sx={{
-					width: '100%',
-					maxWidth: 360,
-					bgcolor: 'background.paper',
-					ml: 'auto',
-					mr: 'auto',
-					mt: 6
-				}}
-				component="nav"
-				aria-labelledby="nested-list-subheader"
-				subheader={
-					<ListSubheader component="div" id="nested-list-subheader">
-						Profile
-					</ListSubheader>
-				}
-			>
-				{/* Password Component */}
-				<ListItemButton>
-					<ListItemIcon>
-						<KeyIcon />
-					</ListItemIcon>
-					<ListItemText primary="Password" />
+			<Box sx={{height:'100vh'}}>
+				<List
+					sx={{
+						width: '100%',
+						maxWidth: 360,
+						bgcolor: 'background.paper',
+						ml: 'auto',
+						mr: 'auto',
+						mt: 6
+					}}
+					component="nav"
+					aria-labelledby="nested-list-subheader"
+					subheader={
+						<ListSubheader
+							component="div"
+							id="nested-list-subheader"
+						>
+							Profile
+						</ListSubheader>
+					}
+				>
+					{/* Password Component */}
+					<ListItemButton>
+						<ListItemIcon>
+							<KeyIcon />
+						</ListItemIcon>
+						<ListItemText primary="Password" />
 
-					<Popup trigger={<EditIcon />} modal>
-						<Box
-							sx={{ textAlign: 'center', pt: 2 }}
-							component="form"
-						>
-							<Typography
-								variant="h6"
-								sx={{ fontWeight: 'bolder' }}
+						<Popup trigger={<EditIcon />} modal>
+							<Box
+								sx={{ textAlign: 'center', pt: 2 }}
+								component="form"
 							>
-								Change Password
-							</Typography>
-							<TextField
-								sx={{ mt: 2 }}
-								id="password"
-								color="secondary"
-								label="New Password"
-								variant="filled"
-								error={errors.password}
-								{...register('password', { required: true })}
-							/>
-							<br />
-							<LoadingButton
-								onClick={handleSubmit(onSubmit)}
-								type="submit"
-								variant="contained"
-								color="secondary"
-								loading={loading}
-								sx={{ mt: 3 }}
-							>
-								Change
-							</LoadingButton>
-						</Box>
-					</Popup>
-				</ListItemButton>
+								<Typography
+									variant="h6"
+									sx={{ fontWeight: 'bolder' }}
+								>
+									Change Password
+								</Typography>
+								<TextField
+									sx={{ mt: 2 }}
+									id="password"
+									color="secondary"
+									label="New Password"
+									variant="filled"
+									error={errors.password}
+									{...register('password', {
+										required: true
+									})}
+								/>
+								{errors.password && (
+									<Typography variant="body2" color="error">
+										{errors.password.message}
+									</Typography>
+								)}
+								<br />
+								<LoadingButton
+									onClick={handleSubmit(onSubmit)}
+									type="submit"
+									variant="contained"
+									color="secondary"
+									loading={loading}
+									sx={{ mt: 3 }}
+								>
+									Change
+								</LoadingButton>
+							</Box>
+						</Popup>
+					</ListItemButton>
 
-				{/* Instagram Component */}
-				<ListItemButton>
-					<ListItemIcon>
-						<InstagramIcon />
-					</ListItemIcon>
-					<ListItemText primary="Instagram" />
-					<Popup trigger={<EditIcon />} modal>
-						<Box
-							sx={{ textAlign: 'center', pt: 2 }}
-							component="form"
-							id="instausername"
-						>
-							<Typography
-								variant="h6"
-								sx={{ fontWeight: 'bolder' }}
+					{/* Instagram Component */}
+					<ListItemButton>
+						<ListItemIcon>
+							<InstagramIcon />
+						</ListItemIcon>
+						<ListItemText primary="Instagram" />
+						<Popup trigger={<EditIcon />} modal>
+							<Box
+								sx={{ textAlign: 'center', pt: 2 }}
+								component="form"
+								id="instausername"
 							>
-								Change Insta Username
-							</Typography>
-							<TextField
-								sx={{ mt: 2 }}
-								id="instagram"
-								color="secondary"
-								label="New UserName"
-								variant="filled"
-								error={errors2.insta}
-								{...register2('insta', { required: true })}
-							/>
-							<br />
-							<LoadingButton
-								onClick={handleSubmit2(onSubmit)}
-								type="submit"
-								variant="contained"
-								color="secondary"
-								sx={{ mt: 3 }}
-							>
-								Change
-							</LoadingButton>
-						</Box>
-					</Popup>
-				</ListItemButton>
-				{/* Whatsapp Component */}
-				<ListItemButton>
-					<ListItemIcon>
-						<WhatsAppIcon />
-					</ListItemIcon>
-					<ListItemText primary="Whatsapp" />
-					<Popup trigger={<EditIcon />} modal>
-						<Box
-							sx={{ textAlign: 'center', pt: 2 }}
-							component="form"
-							id="whatsapp"
-						>
-							<Typography
-								variant="h6"
-								sx={{ fontWeight: 'bolder' }}
-							>
-								Change Whatsapp Number
-							</Typography>
-							<TextField
-								sx={{ mt: 2 }}
+								<Typography
+									variant="h6"
+									sx={{ fontWeight: 'bolder' }}
+								>
+									Change Insta Username
+								</Typography>
+								<TextField
+									sx={{ mt: 2 }}
+									id="instagram"
+									color="secondary"
+									label="New UserName"
+									variant="filled"
+									error={errors2.insta}
+									{...register2('insta', { required: true })}
+								/>
+								<br />
+								<LoadingButton
+									onClick={handleSubmit2(onSubmit)}
+									type="submit"
+									variant="contained"
+									color="secondary"
+									sx={{ mt: 3 }}
+								>
+									Change
+								</LoadingButton>
+							</Box>
+						</Popup>
+					</ListItemButton>
+					{/* Whatsapp Component */}
+					<ListItemButton>
+						<ListItemIcon>
+							<WhatsAppIcon />
+						</ListItemIcon>
+						<ListItemText primary="Whatsapp" />
+						<Popup trigger={<EditIcon />} modal>
+							<Box
+								sx={{ textAlign: 'center', pt: 2 }}
+								component="form"
 								id="whatsapp"
-								color="secondary"
-								label="New Number"
-								variant="filled"
-								error={errors3.whatsapp}
-								{...register3('whatsapp', { required: true })}
-							/>
-							<br />
-							<LoadingButton
-								onClick={handleSubmit3(onSubmit)}
-								type="submit"
-								variant="contained"
-								color="secondary"
-								sx={{ mt: 3 }}
 							>
-								Change
-							</LoadingButton>
-						</Box>
-					</Popup>
-				</ListItemButton>
+								<Typography
+									variant="h6"
+									sx={{ fontWeight: 'bolder' }}
+								>
+									Change Whatsapp Number
+								</Typography>
+								<TextField
+									sx={{ mt: 2 }}
+									id="whatsapp"
+									color="secondary"
+									label="New Number"
+									variant="filled"
+									error={errors3.whatsapp}
+									{...register3('whatsapp', {
+										required: true
+									})}
+								/>
+								<br />
+								<LoadingButton
+									onClick={handleSubmit3(onSubmit)}
+									type="submit"
+									variant="contained"
+									color="secondary"
+									sx={{ mt: 3 }}
+								>
+									Change
+								</LoadingButton>
+							</Box>
+						</Popup>
+					</ListItemButton>
 
-				{/* Website Component */}
-				<ListItemButton>
-					<ListItemIcon>
-						<LinkIcon />
-					</ListItemIcon>
-					<ListItemText primary="Website Url" />
-					<Popup trigger={<EditIcon />} modal>
-						<Box
-							sx={{ textAlign: 'center', pt: 2 }}
-							component="form"
-							id="url"
-						>
-							<Typography
-								variant="h6"
-								sx={{ fontWeight: 'bolder' }}
-							>
-								Change Website Url
-							</Typography>
-							<TextField
-								sx={{ mt: 2 }}
+					{/* Website Component */}
+					<ListItemButton>
+						<ListItemIcon>
+							<LinkIcon />
+						</ListItemIcon>
+						<ListItemText primary="Website Url" />
+						<Popup trigger={<EditIcon />} modal>
+							<Box
+								sx={{ textAlign: 'center', pt: 2 }}
+								component="form"
 								id="url"
-								color="secondary"
-								label="New url"
-								variant="filled"
-								error={errors4.url}
-								{...register4('url', { required: true })}
-							/>
-							<br />
-							<LoadingButton
-								onClick={handleSubmit4(onSubmit)}
-								type="submit"
-								variant="contained"
-								color="secondary"
-								sx={{ mt: 3 }}
 							>
-								Change
-							</LoadingButton>
-						</Box>
-					</Popup>
-				</ListItemButton>
-			</List>
+								<Typography
+									variant="h6"
+									sx={{ fontWeight: 'bolder' }}
+								>
+									Change Website Url
+								</Typography>
+								<TextField
+									sx={{ mt: 2 }}
+									id="url"
+									color="secondary"
+									label="New url"
+									variant="filled"
+									error={errors4.url}
+									{...register4('url', { required: true })}
+								/>
+								<br />
+								<LoadingButton
+									onClick={handleSubmit4(onSubmit)}
+									type="submit"
+									variant="contained"
+									color="secondary"
+									sx={{ mt: 3 }}
+								>
+									Change
+								</LoadingButton>
+							</Box>
+						</Popup>
+					</ListItemButton>
+				</List>
+			</Box>
 		</>
 	);
 }

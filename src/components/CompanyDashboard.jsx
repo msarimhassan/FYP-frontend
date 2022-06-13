@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import Tiles from './CompanyDashboard/Tiles';
 import '.././styles/Dashboard.css';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route,Redirect } from 'react-router-dom';
 import AddTour from './CompanyDashboard/AddTour';
 import UpdateTour from './CompanyDashboard/UpdateTour';
 import ManageTours from './CompanyDashboard/ManageTours';
@@ -11,11 +11,14 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { CompanyContext } from '../contexts/CompanyContext';
 import CompanyProfile from './CompanyDashboard/CompanyProfile';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Company(props) {
 	const { match } = props;
 	const { companyData } = useContext(CompanyContext);
-
+	const {currentUser}=useAuth();
+	const isOrg=localStorage.getItem('isOrg');
+ if(isOrg==='Yes'){
 	return (
 		<div style={{ backgroundColor: '#F3F3F3' }}>
 			<ResponsiveAppBar pathname={match.path} />
@@ -61,4 +64,8 @@ export default function Company(props) {
 			<br />
 		</div>
 	);
+					}
+					else{
+						return <Redirect to='/'/>
+					}
 }

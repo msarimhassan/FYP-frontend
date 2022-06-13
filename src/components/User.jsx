@@ -2,14 +2,18 @@ import React, { useContext } from 'react';
 import Appbar from './UserDashboard/Appbar';
 import Favourite from './UserDashboard/Favourite.jsx';
 import Dashboard from './UserDashboard/Dashboard';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route,Redirect } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
 import { Divider, Typography, Box } from '@mui/material';
 import UserProfile from "./UserDashboard/UserProfile";
+import { useAuth } from '../contexts/AuthContext';
 
 export default function User(props) {
 	const { match } = props;
+	const {currentUser}=useAuth();
 	const { userData } = useContext(UserContext);
+	const isOrg=localStorage.getItem('isOrg');
+	if(isOrg==='No'){
 	return (
 		<>
 			<Appbar pathname={match.path} />
@@ -38,5 +42,10 @@ export default function User(props) {
 				/>
 			</Switch>
 		</>
+
 	);
+	}
+	else{
+		return <Redirect to='/'/>
+	}
 }
