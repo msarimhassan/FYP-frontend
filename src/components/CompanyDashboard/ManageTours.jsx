@@ -88,7 +88,7 @@ export default function ManageTours() {
 			<ToastContainer />
 			{/* Tour Cards */}
 			{render ? (
-				<Box sx={{ maxWidth: 450, m: 'auto' }}>
+				<div style={{ display:'flex',flexWrap:'wrap',justifyContent:'center',height:'100%' }}>
 					{tours.length > 0 ? (
 						tours.map(tour => (
 							<TourContainer
@@ -104,7 +104,7 @@ export default function ManageTours() {
 							</Typography>
 						</Box>
 					)}
-				</Box>
+				</div>
 			) : (
 				<div
 					style={{

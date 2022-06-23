@@ -16,6 +16,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Mountain from '../../images/Mountains.avif';
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -117,19 +118,19 @@ export default function AddTour() {
 	};
 
 	const handleSubmit = async e => {
-		console.log('CompanyEmail',CompanyEmail)
+		console.log('CompanyEmail', CompanyEmail);
 		setLoading(true);
 		e.preventDefault();
 
 		uploadImage(File).then(imgUrl => {
-			setTour({ ...tour, imgUrl ,CompanyEmail});
+			setTour({ ...tour, imgUrl, CompanyEmail });
 			const tourData = {
 				...tour,
 				imgUrl,
 				whatsappNo,
 				instaUsername,
 				webUrl,
-				CompanyName,
+				CompanyName
 			};
 			console.log(tourData);
 
@@ -175,308 +176,309 @@ export default function AddTour() {
 	};
 	return (
 		<React.Fragment>
-			<ToastContainer />
-			<Typography
-				variant="h4"
-				textAlign="center"
-				fontWeight="bold"
-				color="secondary"
-			>
-				Post a Tour
-			</Typography>
-			<Box
-				sx={{
-					width: '50%',
-					marginLeft: 'auto',
-					marginRight: 'auto',
-					border: 1 / 2,
-					borderColor: '#9575cd',
-					boxShadow: 6,
-					pt: 1,
-					pb: 1,
-					mt: 3
-				}}
-			>
-				<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-					<Tabs
-						value={value}
-						onChange={handleChange}
-						aria-label="basic tabs example"
-						centered
-						textColor="secondary"
-						indicatorColor="secondary"
-					>
-						<Tab label="Create Tour" {...a11yProps(0)} />
-						<Tab label="Preview" {...a11yProps(1)} />
-					</Tabs>
-				</Box>
-
-				{/* Add Tour form */}
-				<TabPanel value={value} index={0} width="50%">
-					{/* Form to create a new Tour */}
-
-					<Box
-						component="form"
-						id="tourform"
-						textAlign="center"
-						onSubmit={handleSubmit}
-					>
-						<Typography
-							variant="h4"
-							textAlign="Left"
-							color="secondary"
+			<div >
+				<ToastContainer />
+				<Typography
+					variant="h4"
+					textAlign="center"
+					fontWeight="bold"
+					color="secondary"
+				>
+					Post a Tour
+				</Typography>
+				<Box
+					sx={{
+						width: '50%',
+						marginLeft: 'auto',
+						marginRight: 'auto',
+						border: 1 / 2,
+						borderColor: '#9575cd',
+						boxShadow: 6,
+						pt: 1,
+						pb: 1,
+						mt: 3
+					}}
+				>
+					<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+						<Tabs
+							value={value}
+							onChange={handleChange}
+							aria-label="basic tabs example"
+							centered
+							textColor="secondary"
+							indicatorColor="secondary"
 						>
-							Tour Details
-						</Typography>
-						{error.status ? (
-							<Alert
-								sx={{ mt: 1 }}
-								variant="outlined"
-								severity={error.type}
-							>
-								{error.msg}
-							</Alert>
-						) : (
-							''
-						)}
-						<div>
-							<TextField
-								fullWidth
-								id="title"
-								name="title"
-								sx={{ mt: 2 }}
-								label="Tour Title"
-								value={tour.title}
-								onChange={handleInputChange}
-								variant="filled"
-								color="secondary"
-							/>
-							<br />
-							<TextField
-								fullWidth
-								id="outlined-required"
-								id="location"
-								name="location"
-								value={tour.location}
-								onChange={handleInputChange}
-								sx={{ mt: 4 }}
-								label="Tour Location"
-								variant="filled"
-								required
-								color="secondary"
-							/>
-							<br />
-
-							<TextField
-								fullWidth
-								id="outlined-required"
-								id="image-input"
-								name="image_input"
-								type="file"
-								onChange={handleImage}
-								sx={{ mt: 4 }}
-								label="Tour Banner"
-								color="secondary"
-								variant="filled"
-								InputProps={{
-									startAdornment: (
-										<InputAdornment position="start">
-											<AddAPhotoIcon />
-										</InputAdornment>
-									)
-								}}
-								focused
-							/>
-							{imageName && imageName ? (
-								<Typography
-									color="secondary"
-									fontWeight="bold"
-									textAlign="Left"
-								>
-									{imageName} is set{' '}
-								</Typography>
-							) : (
-								<Typography
-									color="secondary"
-									fontWeight="bold"
-									textAlign="Left"
-								>
-									Image is not set{' '}
-								</Typography>
-							)}
-
-							<br />
-							<TextField
-								fullWidth
-								id="outlined-required"
-								id="duration"
-								name="duration"
-								value={tour.duration}
-								onChange={handleInputChange}
-								sx={{ mt: 4 }}
-								label="Duration"
-								variant="filled"
-								color="secondary"
-								required
-							/>
-							<br />
-							<TextField
-								fullWidth
-								id="outlined-required"
-								sx={{ mt: 4 }}
-								label="Price"
-								value={tour.price}
-								onChange={handleInputChange}
-								id="price"
-								name="price"
-								color="secondary"
-								variant="filled"
-								required
-							/>
-							<br />
-							<TextField
-								fullWidth
-								id="outlined-required"
-								sx={{ mt: 4 }}
-								label="Starting Date"
-								value={tour.date}
-								onChange={handleInputChange}
-								type="Date"
-								id="date"
-								color="secondary"
-								name="date"
-								variant="filled"
-								required
-								focused
-							/>
-							<br />
-							<TextField
-								fullWidth
-								id="outlined-required"
-								sx={{ mt: 4 }}
-								label="Description"
-								value={tour.details}
-								onChange={handleInputChange}
-								id="details"
-								color="secondary"
-								name="details"
-								multiline
-								rows={6}
-								variant="filled"
-								required
-							/>
-
-							<LoadingButton
-								fullWidth
-								type="submit"
-								loading={loading}
-								variant="contained"
-								color="secondary"
-								sx={{ mt: 3 }}
-							>
-								Post
-							</LoadingButton>
-						</div>
+							<Tab label="Create Tour" {...a11yProps(0)} />
+							<Tab label="Preview" {...a11yProps(1)} />
+						</Tabs>
 					</Box>
-				</TabPanel>
 
-				{/* Preview componnet  */}
-				<TabPanel value={value} index={1}>
-					<Box>
+					{/* Add Tour form */}
+					<TabPanel value={value} index={0} width="50%">
+						{/* Form to create a new Tour */}
+
 						<Box
+							component="form"
+							id="tourform"
 							textAlign="center"
-							sx={{ boxShadow: 3, borderRadius: 5 }}
+							onSubmit={handleSubmit}
 						>
-							<img
-								src={imageUrl}
-								alt="Tour Banner"
-								width="100%"
-								style={{ borderRadius: '20px' }}
-							/>
+							<Typography
+								variant="h4"
+								textAlign="Left"
+								color="secondary"
+							>
+								Tour Details
+							</Typography>
+							{error.status ? (
+								<Alert
+									sx={{ mt: 1 }}
+									variant="outlined"
+									severity={error.type}
+								>
+									{error.msg}
+								</Alert>
+							) : (
+								''
+							)}
+							<div>
+								<TextField
+									fullWidth
+									id="title"
+									name="title"
+									sx={{ mt: 2 }}
+									label="Tour Title"
+									value={tour.title}
+									onChange={handleInputChange}
+									variant="filled"
+									color="secondary"
+								/>
+								<br />
+								<TextField
+									fullWidth
+									id="outlined-required"
+									id="location"
+									name="location"
+									value={tour.location}
+									onChange={handleInputChange}
+									sx={{ mt: 4 }}
+									label="Tour Location"
+									variant="filled"
+									required
+									color="secondary"
+								/>
+								<br />
+
+								<TextField
+									fullWidth
+									id="outlined-required"
+									id="image-input"
+									name="image_input"
+									type="file"
+									onChange={handleImage}
+									sx={{ mt: 4 }}
+									label="Tour Banner"
+									color="secondary"
+									variant="filled"
+									InputProps={{
+										startAdornment: (
+											<InputAdornment position="start">
+												<AddAPhotoIcon />
+											</InputAdornment>
+										)
+									}}
+									focused
+								/>
+								{imageName && imageName ? (
+									<Typography
+										color="secondary"
+										fontWeight="bold"
+										textAlign="Left"
+									>
+										{imageName} is set{' '}
+									</Typography>
+								) : (
+									<Typography
+										color="secondary"
+										fontWeight="bold"
+										textAlign="Left"
+									>
+										Image is not set{' '}
+									</Typography>
+								)}
+
+								<br />
+								<TextField
+									fullWidth
+									id="outlined-required"
+									id="duration"
+									name="duration"
+									value={tour.duration}
+									onChange={handleInputChange}
+									sx={{ mt: 4 }}
+									label="Duration"
+									variant="filled"
+									color="secondary"
+									required
+								/>
+								<br />
+								<TextField
+									fullWidth
+									id="outlined-required"
+									sx={{ mt: 4 }}
+									label="Price"
+									value={tour.price}
+									onChange={handleInputChange}
+									id="price"
+									name="price"
+									color="secondary"
+									variant="filled"
+									required
+								/>
+								<br />
+								<TextField
+									fullWidth
+									id="outlined-required"
+									sx={{ mt: 4 }}
+									label="Starting Date"
+									value={tour.date}
+									onChange={handleInputChange}
+									type="Date"
+									id="date"
+									color="secondary"
+									name="date"
+									variant="filled"
+									required
+									focused
+								/>
+								<br />
+								<TextField
+									fullWidth
+									id="outlined-required"
+									sx={{ mt: 4 }}
+									label="Description"
+									value={tour.details}
+									onChange={handleInputChange}
+									color="secondary"
+									name="details"
+									multiline
+									rows={6}
+									variant="filled"
+									required
+								/>
+
+								<LoadingButton
+									fullWidth
+									type="submit"
+									loading={loading}
+									variant="contained"
+									color="secondary"
+									sx={{ mt: 3 }}
+								>
+									Post
+								</LoadingButton>
+							</div>
 						</Box>
-						<Typography
-							variant="h4"
-							sx={{ mt: 4 }}
-							fontWeight="bold"
-							color="secondary"
-							textAlign="center"
-						>
-							{tour.title}
-						</Typography>
-						<Divider sx={{ mt: 2 }} variant="middle" />
-						<Typography
-							variant="h6"
-							sx={{ mt: 2 }}
-							fontWeight="bold"
-							color="secondary"
-							textAlign="left"
-						>
-							Location:
-							<span style={{ color: '#37474f' }}>
-								{tour.location}
-							</span>{' '}
-						</Typography>
-						<Typography
-							variant="h6"
-							sx={{ mt: 2 }}
-							fontWeight="bold"
-							color="secondary"
-							textAlign="left"
-						>
-							Starting-Date:
-							<span style={{ color: '#37474f' }}>
-								{' '}
-								{tour.date}
-							</span>{' '}
-						</Typography>
-						<Typography
-							variant="h6"
-							sx={{ mt: 2 }}
-							fontWeight="bold"
-							color="secondary"
-							textAlign="left"
-						>
-							Duration:
-							<span style={{ color: '#37474f' }}>
-								{tour.duration} days
-							</span>{' '}
-						</Typography>
-						<Typography
-							variant="h6"
-							sx={{ mt: 2 }}
-							fontWeight="bold"
-							color="secondary"
-							textAlign="left"
-						>
-							Price:
-							<span style={{ color: '#37474f' }}>
-								{tour.price} Rs
-							</span>{' '}
-						</Typography>
-						<Divider sx={{ mt: 2 }} variant="middle" />
-						<Typography
-							variant="h6"
-							sx={{ mt: 2 }}
-							fontWeight="bold"
-							textAlign="left"
-							color="secondary"
-						>
-							Details:
-						</Typography>
-						<Typography
-							variant="body1"
-							sx={{ mt: 2 }}
-							fontWeight="bold"
-							color="secondary"
-							textAlign="center"
-						>
-							<span style={{ color: '#37474f' }}>
-								{tour.details}
-							</span>{' '}
-						</Typography>
-					</Box>
-				</TabPanel>
-			</Box>
+					</TabPanel>
+
+					{/* Preview componnet  */}
+					<TabPanel value={value} index={1}>
+						<Box>
+							<Box
+								textAlign="center"
+								sx={{ boxShadow: 3, borderRadius: 5 }}
+							>
+								<img
+									src={imageUrl}
+									alt="Tour Banner"
+									width="100%"
+									style={{ borderRadius: '20px' }}
+								/>
+							</Box>
+							<Typography
+								variant="h4"
+								sx={{ mt: 4 }}
+								fontWeight="bold"
+								color="secondary"
+								textAlign="center"
+							>
+								{tour.title}
+							</Typography>
+							<Divider sx={{ mt: 2 }} variant="middle" />
+							<Typography
+								variant="h6"
+								sx={{ mt: 2 }}
+								fontWeight="bold"
+								color="secondary"
+								textAlign="left"
+							>
+								Location:
+								<span style={{ color: '#37474f' }}>
+									{tour.location}
+								</span>{' '}
+							</Typography>
+							<Typography
+								variant="h6"
+								sx={{ mt: 2 }}
+								fontWeight="bold"
+								color="secondary"
+								textAlign="left"
+							>
+								Starting-Date:
+								<span style={{ color: '#37474f' }}>
+									{' '}
+									{tour.date}
+								</span>{' '}
+							</Typography>
+							<Typography
+								variant="h6"
+								sx={{ mt: 2 }}
+								fontWeight="bold"
+								color="secondary"
+								textAlign="left"
+							>
+								Duration:
+								<span style={{ color: '#37474f' }}>
+									{tour.duration} days
+								</span>{' '}
+							</Typography>
+							<Typography
+								variant="h6"
+								sx={{ mt: 2 }}
+								fontWeight="bold"
+								color="secondary"
+								textAlign="left"
+							>
+								Price:
+								<span style={{ color: '#37474f' }}>
+									{tour.price} Rs
+								</span>{' '}
+							</Typography>
+							<Divider sx={{ mt: 2 }} variant="middle" />
+							<Typography
+								variant="h6"
+								sx={{ mt: 2 }}
+								fontWeight="bold"
+								textAlign="left"
+								color="secondary"
+							>
+								Details:
+							</Typography>
+							<Typography
+								variant="body1"
+								sx={{ mt: 2 }}
+								fontWeight="bold"
+								color="secondary"
+								textAlign="center"
+							>
+								<span style={{ color: '#37474f' }}>
+									{tour.details}
+								</span>{' '}
+							</Typography>
+						</Box>
+					</TabPanel>
+				</Box>
+			</div>
 		</React.Fragment>
 	);
 }

@@ -163,6 +163,15 @@ const ResponsiveAppBar = props => {
 								Favourites
 							</Button>
 						</Link>
+						<Link to={`${pathname}/feedback`} style={linkStyle}>
+							<Button
+								key="feedback"
+								onClick={handleCloseNavMenu}
+								sx={{ my: 2, color: 'white', display: 'block' }}
+							>
+								FeedBack
+							</Button>
+						</Link>
 					</Box>
 
 					<Box sx={{ flexGrow: 0 }}>
@@ -174,9 +183,10 @@ const ResponsiveAppBar = props => {
 								<CardHeader
 									avatar={
 										<Avatar>
-											{localStorage&&
-												localStorage.getItem('email')[0].toUpperCase()
-												}
+											{localStorage &&
+												localStorage
+													.getItem('email')[0]
+													.toUpperCase()}
 										</Avatar>
 									}
 								/>

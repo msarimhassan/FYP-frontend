@@ -80,10 +80,6 @@ export default function TourContainer(props) {
 	} = props.tour;
 	//Converting my whatsappNo in international format
 
-	let newNumber = whatsappNo.substr(1);
-	
-	newNumber = '92' + newNumber;
-	console.log(newNumber);
 	const [expanded, setExpanded] = React.useState(false);
 
 	const handleExpandClick = () => {
@@ -221,7 +217,7 @@ export default function TourContainer(props) {
 					{props.flag ? null : (
 						<Stack direction="row" spacing={2} sx={{ mt: 1 }}>
 							<a
-								href={`https://wa.me/${newNumber}`}
+								href={`https://wa.me/${whatsappNo}`}
 								target="_blank"
 							>
 								<Chip color="success" icon={<WhatsAppIcon />} />

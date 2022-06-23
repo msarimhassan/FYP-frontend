@@ -6,6 +6,7 @@ import { Switch, Route,Redirect } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
 import { Divider, Typography, Box } from '@mui/material';
 import UserProfile from "./UserDashboard/UserProfile";
+import Feedback from './UserDashboard/Feedback';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function User(props) {
@@ -40,9 +41,13 @@ export default function User(props) {
 					path={`${match.path}/userprofile`}
 					component={UserProfile}
 				/>
+				<Route
+					exact
+					path={`${match.path}/feedback`}
+					component={Feedback}
+				/>
 			</Switch>
 		</>
-
 	);
 	}
 	else{

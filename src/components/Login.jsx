@@ -80,7 +80,7 @@ export default function Login() {
 		<React.Fragment>
 			<Navbar />
 			<ToastContainer />
-			<div className="login-container" >
+			<div className="login-container" q>
 				<Box>
 					<img
 						src={LoginWallpaper}

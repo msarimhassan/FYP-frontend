@@ -1,26 +1,33 @@
-import React from 'react';
+import React,{useEffect,useContext} from 'react';
+import axios from 'axios';
 import { PieChart, Pie, Tooltip} from 'recharts';
+import { CompanyContext } from '../../contexts/CompanyContext';
 
 export default function Graph() {
+     const email=localStorage.getItem('email');
+	 	const {
+			count,
+			favCount,
+			
+		} = useContext(CompanyContext);
+    useEffect(()=>{
+      
+     getTour();
+       
+	},[])
+
+	const getTour=async()=>{
+     const response=await axios.get(`http://localhost:5000/company/gettours/${email}`);
+	 console.log(response.data);
+	}
+
 	const data01 = [
-		{ name: 'Group A', value: 400 },
-		{ name: 'Group B', value: 300 },
-		{ name: 'Group C', value: 300 },
-		{ name: 'Group D', value: 200 }
+		{ name: 'Tour Counts', value:count? count:0 },
+	
 	];
 	const data02 = [
-		{ name: 'A1', value: 100 },
-		{ name: 'A2', value: 300 },
-		{ name: 'B1', value: 100 },
-		{ name: 'B2', value: 80 },
-		{ name: 'B3', value: 40 },
-		{ name: 'B4', value: 30 },
-		{ name: 'B5', value: 50 },
-		{ name: 'C1', value: 100 },
-		{ name: 'C2', value: 200 },
-		{ name: 'D1', value: 150 },
-		{ name: 'D2', value: 50 }
-	];
+		{ name: 'Add to Favourites', value:favCount?favCount:0 },]
+
 
 	return (
 		

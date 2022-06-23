@@ -16,9 +16,10 @@ import { CompanyContext } from '../../contexts/CompanyContext';
 import axios from 'axios';
 import ProfileCard from '../ProfileCard';
 import Graph from './Graph';
-
+import Explore from '../../images/Explore.PNG';
+import VirtualizedList from './DisplayFeedback';
 const Item = styled(Paper)(({ theme }) => ({
-	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#df73ff',
+	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : 'transparent',
 	...theme.typography.h4,
 	padding: theme.spacing(1),
 	textAlign: 'left',
@@ -27,36 +28,16 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function Tiles() {
-	const { count, companyData, setCompanyData, setCount } =
-		useContext(CompanyContext);
+	const {
+		count,
+		companyData,
+		setCompanyData,
+		setCount,
+		favCount,
+		setfavCount
+	} = useContext(CompanyContext);
 	const { currentUser } = useAuth();
-	// console.log(companyData);
-	// useEffect(() => {
-	// 	fetchdata();
-	// }, []);
-	// const fetchdata = async () => {
-	// 	console.log('fetching the data ');
-	// 	let one = `http://localhost:5000/company/tourcount/${currentUser.email}`;
-	// 	let two = `http://localhost:5000/company/getcompanydata/${currentUser.email}`;
-	// 	const requestOne = await axios.get(one);
-	// 	const requestTwo = await axios.get(two);
-	// 	axios
-	// 		.all([requestOne, requestTwo])
-	// 		.then(
-	// 			axios.spread((...responses) => {
-	// 				const responseOne = responses[0];
-	// 				const responseTwo = responses[1];
-	// 				console.log('responseOne', responseOne);
-	// 				console.log('responseTwo', responseTwo);
-	// 				setCompanyData(responseTwo.data);
-	// 				setCount(responseOne.data.count);
-	// 			})
-	// 		)
-	// 		.catch(errors => {
-	// 			console.log(errors);
-	// 		});
-	// };
-
+   let flag=companyData?companyData.name: localStorage.getItem('CompanyName');
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -67,12 +48,16 @@ export default function Tiles() {
 					),
 					axios.get(
 						`http://localhost:5000/company/getcompanydata/${email}`
+					),
+					axios.get(
+						`http://localhost:5000/company/countlikes/${flag}`
 					)
 				])
 					.then(res => {
 						setCount(res[0].data.count);
 						console.log(res[1].data);
 						setCompanyData(res[1].data);
+						setfavCount(res[2].data.likes);
 						localStorage.setItem('CompanyName', res[1].data.name);
 						localStorage.setItem(
 							'instaUsername',
@@ -95,12 +80,9 @@ export default function Tiles() {
 		};
 		fetchData();
 	}, []);
-	useEffect(() => {
-		console.log('Abdullah Ch');
-	}, []);
 
 	return (
-		<React.Fragment>
+		<>
 			<Stack
 				direction="row"
 				spacing={2}
@@ -131,13 +113,16 @@ export default function Tiles() {
 				alignItems="center"
 				sx={{
 					mt: 5,
-					bgcolor: '#df73ff',
+					backgroundColor: '',
 					pt: 5,
 					pb: 5,
 					boxShadow: 3,
 					borderRadius: 10,
 					ml: 'auto',
-					mr: 'auto'
+					mr: 'auto',
+					backgroundImage: `url(${Explore})`,
+					backgroundSize: 'cover',
+					backgroundRepeat: 'no-repeat'
 				}}
 			>
 				<Item elevation={0}>
@@ -155,7 +140,7 @@ export default function Tiles() {
 						<FavoriteIcon />
 						Liked
 					</Typography>
-					0
+					{favCount}
 					<Typography variant="body2">
 						Total liked by our users
 					</Typography>
@@ -171,7 +156,7 @@ export default function Tiles() {
 					</Typography>
 				</Item>
 			</Stack>
-			{/* profile and graph */}
+
 			<Stack
 				width="80%"
 				direction={{ xs: 'column', sm: 'row' }}
@@ -188,6 +173,9 @@ export default function Tiles() {
 					<Graph />
 				</Item>
 			</Stack>
-		</React.Fragment>
+			{/* <div style={{marginLeft:'auto',marginRight:'auto',width:'100vh',marginTop:'5px'}} >
+				<VirtualizedList />
+			</div> */}
+		</>
 	);
 }

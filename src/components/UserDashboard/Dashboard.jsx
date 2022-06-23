@@ -10,7 +10,6 @@ import DateRangeIcon from '@mui/icons-material/DateRange';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 export default function Dashboard() {
-	const { currentUser } = useAuth();
 	const [tours, setTours] = useState([]);
 	const [searchedTours, setSearchedTours] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -58,7 +57,22 @@ export default function Dashboard() {
 			console.log({ array });
 			setSearchedTours(array);
 		} else if (name === 'days') {
-			console.log('days');
+			const array = tours.filter(item => {
+				if (item.duration.includes(value)) {
+					return item;
+					
+				}
+			});
+			setSearchedTours(array);
+		}
+		else if(name==='price'){
+			const array = tours.filter(item => {
+				if (item.price.includes(value)) {
+					return item;
+				}
+			});
+			setSearchedTours(array);
+		
 		}
 	};
 	// Dummy function to handle data
@@ -102,6 +116,7 @@ export default function Dashboard() {
 					variant="filled"
 					name="days"
 					onChange={e => {
+						setSearch(e.target.value);
 						filterTours(e);
 					}}
 					InputProps={{
@@ -118,6 +133,7 @@ export default function Dashboard() {
 					name="price"
 					onChange={e => {
 						filterTours(e);
+							setSearch(e.target.value);
 					}}
 					InputProps={{
 						startAdornment: (
@@ -128,7 +144,7 @@ export default function Dashboard() {
 					}}
 				/>
 			</div>
-		
+
 			{loading ? (
 				<div
 					style={{
